@@ -1,4 +1,5 @@
 -- Keybindings for launching apps in Hyper Mode
+--
 
 return {
   -- { hotkey, app-path, kbd-layout },
