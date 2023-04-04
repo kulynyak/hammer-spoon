@@ -27,34 +27,34 @@ Install:andUse('HoldToQuit', { start = true })
 
 Install:andUse 'Caffeine'
 local caffeine = spoon.Caffeine:start()
-caffeine.clicked()
+-- caffeine.clicked()
 
-Install:andUse 'BingDaily'
+-- Install:andUse 'BingDaily'
 
-Install:andUse('RoundedCorners', { start = true })
+-- Install:andUse('RoundedCorners', { start = true })
 
 Install:andUse('TextClipboardHistory', {
   start = true,
   config = {
-    show_in_menubar = true,
+    show_in_menubar = false,
     hist_size = 50,
     paste_on_select = false,
   },
   hotkeys = { toggle_clipboard = { hyper, 'v' } },
 })
 
-local col = hs.drawing.color.x11
-Install:andUse('MenubarFlag', {
-  start = true,
-  config = {
-    colors = {
-      ['U.S.'] = {},
-      ['Ukrainian - PC'] = { col.blue, col.yellow },
-      ['Ukrainian'] = { col.blue, col.yellow },
-      ['Ukrainian+'] = { col.blue, col.yellow },
-    },
-  },
-})
+-- local col = hs.drawing.color.x11
+-- Install:andUse('MenubarFlag', {
+--   start = true,
+--   config = {
+--     colors = {
+--       ['U.S.'] = {},
+--       ['Ukrainian - PC'] = { col.blue, col.yellow },
+--       ['Ukrainian'] = { col.blue, col.yellow },
+--       ['Ukrainian+'] = { col.blue, col.yellow },
+--     },
+--   },
+-- })
 
 local chrome = 'com.google.Chrome'
 -- local opera = "com.operasoftware.Opera"
@@ -62,16 +62,14 @@ local chrome = 'com.google.Chrome'
 local firefox = 'org.mozilla.firefox'
 -- local firefoxDev = "org.mozilla.firefoxdeveloperedition"
 -- local vivaldi = 'com.vivaldi.Vivaldi'
--- local brave = "com.brave.Browser"
+local brave = 'com.brave.Browser'
+local edge = 'com.microsoft.edgemac'
 
 local defBrowser = firefox
-
-local lohikaBrowser = firefox
-local devBrowser = firefox
--- local evolvBrowser = chrome
+local devBrowser = chrome
 local myBrowser = firefox
--- local ruckusBrowser = brave
-local googleBrowser = chrome
+local zsuBrowser = chrome
+local googleBrowser = edge
 
 local fireIf = function(browser)
   return function(url)
@@ -93,64 +91,22 @@ Install:andUse('URLDispatcher', {
   config = {
     url_patterns = {
       -- messingers
-      { 'msteams:', 'com.microsoft.teams' },
-      { 'zoommtg:', 'us.zoom.xos' },
-      { 'tg:', 'ru.keepcoder.Telegram' },
-      -- mine
-      { '.*kulynyak.*', devBrowser, fireIf(devBrowser) },
-      { '.*localhost.*', devBrowser, fireIf(devBrowser) },
-      { '.*127%.0%.0%.1.*', devBrowser, fireIf(devBrowser) },
+      { 'msteams:',                         'com.microsoft.teams' },
+      { 'zoommtg:',                         'us.zoom.xos' },
+      { 'tg:',                              'ru.keepcoder.Telegram' },
+      -- dev
+      { '.*localhost.*',                    devBrowser,             fireIf(devBrowser) },
+      { '.*127%.0%.0%.1.*',                 devBrowser,             fireIf(devBrowser) },
       --
-      { 'https?://.*skype%.com.*', defBrowser },
-      { 'https?://.*maps%.google%.com.*', defBrowser },
-      -- Lohika
-      { 'https?://.*%.?lohika%.com.*', lohikaBrowser, fireIf(lohikaBrowser) },
-      { 'https?://.*%.?office%.com.*', lohikaBrowser, fireIf(lohikaBrowser) },
-      {
-        'https?://lohikaonline.sharepoint.com.*',
-        lohikaBrowser,
-        fireIf(lohikaBrowser),
-      },
-      {
-        'https?://survey.peakon.com.*',
-        lohikaBrowser,
-        fireIf(lohikaBrowser),
-      },
-      {
-        'https?://outlook.office.com.*',
-        lohikaBrowser,
-        fireIf(lohikaBrowser),
-      },
-      {
-        'https?://ukraine.altran.sensiwave.com.*',
-        lohikaBrowser,
-        fireIf(lohikaBrowser),
-      },
-      {
-        'https?://lohikaonline-my.sharepoint.com.*',
-        lohikaBrowser,
-        fireIf(lohikaBrowser),
-      },
-      -- Evolv
-      -- {"https?://evolvmosaiq.atlassian.net/*", evolvBrowser, fireIf(evolvBrowser)},
-      -- {"https?://evolv-control-tower.awsapps.com/*", evolvBrowser, fireIf(evolvBrowser)},
-      -- {"https?://analytics-tableau.sbx.evolvdevelopment.com/*", evolvBrowser, fireIf(evolvBrowser)},
-      -- {"https?://myevolv.evolvtechnology.net/*", evolvBrowser, fireIf(evolvBrowser)},
-      -- {"https?://.*atlassian.com/*", evolvBrowser, fireIf(evolvBrowser)},
-      -- {"https?://bitbucket.org/evolvmosaiq/.*", evolvBrowser, fireIf(evolvBrowser)},
-      -- {"https?://projects.invisionapp.com/.*", evolvBrowser, fireIf(evolvBrowser)},
-      -- ruckus
-      -- { 'https?://.*%.service-now%.com/.*', ruckusBrowser, fireIf(ruckusBrowser)},
-      -- { 'https?://.*%.ruckuswireless%.com/.*', ruckusBrowser, fireIf(ruckusBrowser)},
-      -- { 'https?://.*%.commscope-my%.sharepoint%.com/.*', ruckusBrowser, fireIf(ruckusBrowser)},
-      -- { 'https?://bitbucket.rks-cloud.com/*', ruckusBrowser, fireIf(ruckusBrowser)},
-      -- { 'https?://.*%.rks-cloud%.com/.*', ruckusBrowser, fireIf(ruckusBrowser)},
-      -- { 'https?://.*%.arrisi%.com/.*', ruckusBrowser, fireIf(ruckusBrowser)},
+      { 'https?://.*maps%.google%.com.*',   defBrowser },
+      { 'https?://.*meet.google.com/.*',    googleBrowser,          fireIf(googleBrowser) },
+      { 'https?://.*chat.google.com/.*',    googleBrowser,          fireIf(googleBrowser) },
       --
-      { 'https?://.*meet.google.com/.*', googleBrowser, fireIf(googleBrowser) },
-      { 'https?://.*chat.google.com/.*', googleBrowser, fireIf(googleBrowser) },
+      { 'https?://.*otpay.com.ua.*',        myBrowser,              fireIf(myBrowser) },
       --
-      { 'https?://.*otpay.com.ua.*', myBrowser, fireIf(myBrowser) },
+      { 'https?://.*github.com/vezhadev.*', defBrowser,             fireIf(defBrowser) },
+      { 'https?://.*vishnu.karmf.net.*',    zsuBrowser,             fireIf(zsuBrowser) },
+      { 'https?://.*vezhalive.sentry.io.*', zsuBrowser,             fireIf(zsuBrowser) },
     },
     url_redir_decoders = {
       {
