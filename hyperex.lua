@@ -3,7 +3,7 @@
 
 local HYPEREX_VERSION = '0.3'
 
-local log = hs.logger.new 'hyperex'
+local log = hs.logger.new('hyperex')
 
 local KEY_DOWN = 1
 local KEY_REPEAT = 2
@@ -401,7 +401,7 @@ local CHyperImpl = {
 
   enter = function(self)
     if self._tap:isEnabled() then
-      log.d 'try to re-enter'
+      log.d('try to re-enter')
       return
     end
     if type(self.message) == 'string' then
@@ -416,7 +416,7 @@ local CHyperImpl = {
 
   exit = function(self)
     if not self._tap:isEnabled() then
-      log.d 'try to re-exit'
+      log.d('try to re-exit')
       return
     end
     if type(self.leaveMessage) == 'string' then
@@ -532,9 +532,8 @@ CHyper.new = function(triggerKey)
 
   local handleTap = function(e)
     -- キーボードからの直接入力だけを扱う
-    local stateID = e:getProperty(
-      hs.eventtap.event.properties['eventSourceStateID']
-    )
+    local stateID =
+      e:getProperty(hs.eventtap.event.properties['eventSourceStateID'])
     if stateID ~= 1 then
       return false
     end
@@ -588,9 +587,8 @@ CHyperParasites = {
 }
 
 CHyperParasites._handleTap = function(e)
-  local stateID = e:getProperty(
-    hs.eventtap.event.properties['eventSourceStateID']
-  )
+  local stateID =
+    e:getProperty(hs.eventtap.event.properties['eventSourceStateID'])
   if stateID ~= 1 then
     return false
   end
@@ -641,7 +639,7 @@ CHyperImpl.parasitize = function(self, modifier)
 
   self._parasited = true
   self.sticky = function(self)
-    log.d 'parasite can not become sticky'
+    log.d('parasite can not become sticky')
     return self
   end
   return self

@@ -1,41 +1,43 @@
 -- hs.logger.defaultLogLevel = "debug"
-hs.logger.defaultLogLevel = 'error'
-local log = hs.logger.new 'init.lua'
+hs.logger.defaultLogLevel = 'nothing'
+local log = hs.logger.new('init')
 
 local hyper = { 'command', 'option', 'shift', 'control' }
 local coc = { 'control', 'option', 'command' }
 
-require 'delete-words'
-require 'windows'
-require 'spoons'
-require 'launch'
-require 'notify'
+require('delete-words')
+require('windows')
+require('spoons')
+require('launch')
+require('notify')
+
+-- require 'signal-watcher'
 
 -- switcher_space = hs.window.switcher.new(hs.window.filter.new():setCurrentSpace(true):setDefaultFilter{})
 -- hs.hotkey.bind('alt','tab',function()switcher_space:next()end)
 -- hs.hotkey.bind('alt-shift','tab',function()switcher_space:previous()end)
 
 -- setup apps {{{
-require 'apps'(hyper)
+require('apps')(hyper)
 -- }}}
 
 -- setup keyboard layout fix {{{
-local kbl = require 'kbl'
+local kbl = require('kbl')
 hs.hotkey.bind(hyper, '0', nil, kbl)
 -- }}}
 
 -- setup translation {{{
 local wm = hs.webview.windowMasks
-local translator = require 'PopupTranslateSelection'
+local translator = require('PopupTranslateSelection')
 translator.popup_style = wm.utility
   | wm.HUD
   | wm.titled
   | wm.closable
   | wm.resizable
-translator:bindHotkeys {
+translator:bindHotkeys({
   translate_uk_en = { hyper, '8' },
   translate_en_uk = { hyper, '9' },
-}
+})
 -- }}}
 
 -- Lock Screen - Ctrl+Opt+Cmd+\ {{{
@@ -80,21 +82,26 @@ function muteOnWake(eventType)
     output:setMuted(muteSound)
   end
 end
+
 caffeinateWatcher = hs.caffeinate.watcher.new(muteOnWake)
 caffeinateWatcher:start()
 -- }}}
 
 -- force to switch desktop keyboard layout after start {{{
-hs.keycodes.setLayout 'U.S.'
-kbdTable = { en = 'U.S.', uk = 'Ukrainian+' }
+hs.keycodes.setLayout('ABC')
+kbdTable = {
+  en = 'ABC',
+  uk = 'Ukrainian',
+}
 function setKbd(src)
   keyL = kbdTable[src]
   hs.keycodes.setLayout(keyL)
 end
+
 -- }}}
 
 -- force to set desired keyboard layout for apps on open/focus {{{
-local key2App = require 'apps-def'
+local key2App = require('apps-def')
 hs.window.filter.default:subscribe(
   hs.window.filter.windowFocused,
   function(window, appName)
@@ -116,7 +123,7 @@ hs.window.filter.default:subscribe(
 -- }}}
 
 -- Use {{{
-local kc = require 'keychain'
+local kc = require('keychain')
 hs.hotkey.bind(
   coc,
   'u',
@@ -138,7 +145,12 @@ hs.hotkey.bind(
 
 -- Use coc + ` to reload Hammerspoon config {{{
 hs.hotkey.bind(coc, '`', nil, hs.reload)
-hs.notify.new({ title = 'Hammerspoon', informativeText = 'Ready to rock' }):send()
+hs.notify
+  .new({
+    title = 'Hammerspoon',
+    informativeText = 'Ready to rock',
+  })
+  :send()
 -- }}}
 
 -- Use coc + ` to reload Hammerspoon config {{{

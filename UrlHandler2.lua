@@ -7,7 +7,7 @@ obj.version = '0.1'
 obj.author = 'Andriy Kulynyak <kulynyak@gmail.com>'
 obj.license = 'MIT - https://opensource.org/licenses/MIT'
 
-obj.logger = hs.logger.new 'UrlHandler'
+obj.logger = hs.logger.new('UrlHandler')
 
 obj.customBrowsers = {}
 
@@ -156,10 +156,8 @@ function obj:_showChooser(labels, url)
 end
 
 function obj:start()
-  local browsers = installedBrowsers(
-    self._predefinedBrowsers,
-    self.customBrowsers
-  )
+  local browsers =
+    installedBrowsers(self._predefinedBrowsers, self.customBrowsers)
   self._label2BundleMap = mkLabel2BundleMap(browsers)
 
   self:_showChooser(

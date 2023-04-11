@@ -1,0 +1,26 @@
+{
+  "files.exclude": {
+    "**/.git": false,
+    "**/.svn": false,
+    "**/.hg": false,
+    "**/CVS": false,
+    "**/.DS_Store": false,
+    "**/Thumbs.db": false,
+    "**/node_modules": false,
+    "**/amplify": false,
+    "**/.husky": false,
+    "**/.github": false
+  },
+  "explorerExclude.backup": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true,
+    "**/amplify": true,
+    "**/.husky": true,
+    "**/.github": true
+  }
+}

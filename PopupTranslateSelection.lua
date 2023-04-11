@@ -6,7 +6,7 @@
 ---
 --- Download: [https://github.com/Hammerspoon/Spoons/raw/master/Spoons/PopupTranslateSelection.spoon.zip](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/PopupTranslateSelection.spoon.zip)
 
-local util = require 'util'
+local util = require('util')
 local keyUpDown = util.keyUpDown
 
 local obj = {}
@@ -42,7 +42,7 @@ obj.popup_close_on_escape = true
 --- PopupTranslateSelection.logger
 --- Variable
 --- Logger object used within the Spoon. Can be accessed to set the default log level for the messages coming from the Spoon.
-obj.logger = hs.logger.new('PopupTranslateSelection', 'error')
+obj.logger = hs.logger.new('PopupTranslateSelection')
 
 ----------------------------------------------------------------------
 
@@ -71,7 +71,8 @@ function obj:translatePopup(text, to, from)
   if self.webview == nil then
     local rect = hs.geometry.rect(0, 0, self.popup_size.w, self.popup_size.h)
     rect.center = hs.screen.mainScreen():frame().center
-    self.webview = hs.webview.new(rect)
+    self.webview = hs.webview
+      .new(rect)
       :allowTextEntry(true)
       :windowStyle(self.popup_style)
       :closeOnEscape(self.popup_close_on_escape)
@@ -136,9 +137,9 @@ function obj:bindHotkeys(mapping)
   for action, _ in pairs(mapping) do
     if action == 'translate' then
       def.translate = hs.fnutils.partial(self.translateSelectionPopup, self)
-    elseif action:match '^translate[-_](.*)[-_](.*)$' then
+    elseif action:match('^translate[-_](.*)[-_](.*)$') then
       local from, to = nil, nil
-      local l1, l2 = action:match '^translate[-_](.*)[-_](.*)$'
+      local l1, l2 = action:match('^translate[-_](.*)[-_](.*)$')
       if l1 == 'from' then
         -- "translate_from_<lang>"
         from = l2
@@ -149,12 +150,8 @@ function obj:bindHotkeys(mapping)
         -- "translate_<from>_<to>"
         from, to = l1, l2
       end
-      def[action] = hs.fnutils.partial(
-        self.translateSelectionPopup,
-        self,
-        to,
-        from
-      )
+      def[action] =
+        hs.fnutils.partial(self.translateSelectionPopup, self, to, from)
     else
       self.logger.ef("Invalid hotkey action '%s'", action)
     end

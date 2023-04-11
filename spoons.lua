@@ -14,22 +14,24 @@
 --     hs.eventtap.keyStroke({}, "delete")
 --   end
 -- )
-hs.loadSpoon 'SpoonInstall'
+hs.loadSpoon('SpoonInstall')
 spoon.SpoonInstall.use_syncinstall = true
 
 local hyper = { 'command', 'option', 'shift', 'control' }
 
 local Install = spoon.SpoonInstall
 
-Install:andUse 'Commander'
+Install:andUse('Commander')
 
-Install:andUse('HoldToQuit', { start = true })
+Install:andUse('HoldToQuit', {
+  start = true,
+})
 
-Install:andUse 'Caffeine'
+Install:andUse('Caffeine')
 local caffeine = spoon.Caffeine:start()
 -- caffeine.clicked()
 
--- Install:andUse 'BingDaily'
+Install:andUse('BingDaily')
 
 -- Install:andUse('RoundedCorners', { start = true })
 
@@ -40,7 +42,9 @@ Install:andUse('TextClipboardHistory', {
     hist_size = 50,
     paste_on_select = false,
   },
-  hotkeys = { toggle_clipboard = { hyper, 'v' } },
+  hotkeys = {
+    toggle_clipboard = { hyper, 'v' },
+  },
 })
 
 -- local col = hs.drawing.color.x11
@@ -58,18 +62,33 @@ Install:andUse('TextClipboardHistory', {
 
 local chrome = 'com.google.Chrome'
 -- local opera = "com.operasoftware.Opera"
--- local safari = "com.apple.Safari"
+-- local safari = 'com.apple.Safari'
 local firefox = 'org.mozilla.firefox'
 -- local firefoxDev = "org.mozilla.firefoxdeveloperedition"
 -- local vivaldi = 'com.vivaldi.Vivaldi'
-local brave = 'com.brave.Browser'
+-- local brave = 'com.brave.Browser'
 local edge = 'com.microsoft.edgemac'
 
+-- local defBrowser = safari
 local defBrowser = firefox
 local devBrowser = chrome
-local myBrowser = firefox
+-- local myBrowser = firefox
 local zsuBrowser = chrome
 local googleBrowser = edge
+
+local function executeApplescript(appBandle, args)
+  local appName = hs.application.get(appBandle):name()
+  local script = string.format(
+    [[
+        tell application "%s" to activate
+        do shell script "open -a '%s' %s"
+    ]],
+    appName,
+    appName,
+    args
+  )
+  hs.osascript.applescript(script)
+end
 
 local fireIf = function(browser)
   return function(url)
@@ -77,36 +96,60 @@ local fireIf = function(browser)
     if hs.application.find(browser) then
       target = browser
     end
+    executeApplescript(target, url)
+  end
+end
+
+local function openFFContainer(container)
+  return function(url)
+    local target = defBrowser
+    local theUrl = url
+    local firefox = 'org.mozilla.firefox'
+    if hs.application.get(firefox) then
+      target = firefox
+      theUrl = "'ext+container:name=" .. container .. '&url=' .. url .. "'"
+      executeApplescript(firefox, theUrl)
+      return
+    end
     hs.application.launchOrFocusByBundleID(target)
     hs.urlevent.openURLWithBundle(url, target)
   end
 end
---- 1
---- 2
 
 Install:andUse('URLDispatcher', {
+  -- https://www.hammerspoon.org/Spoons/URLDispatcher.html
   start = true,
   -- Enable debug logging if you get unexpected behavior
-  loglevel = 'error',
+  loglevel = 'info',
   config = {
     url_patterns = {
       -- messingers
-      { 'msteams:',                         'com.microsoft.teams' },
-      { 'zoommtg:',                         'us.zoom.xos' },
-      { 'tg:',                              'ru.keepcoder.Telegram' },
-      -- dev
-      { '.*localhost.*',                    devBrowser,             fireIf(devBrowser) },
-      { '.*127%.0%.0%.1.*',                 devBrowser,             fireIf(devBrowser) },
+      { 'msteams:', 'com.microsoft.teams' },
+      { 'zoommtg:', 'us.zoom.xos' },
+      { 'tg:', 'ru.keepcoder.Telegram' },
+      -- vezha
+      { 'https://github.com/vezhadev/.*', openFFContainer('Zsu') },
+      -- zsu
+      {
+        { 'https?://.*vishnu.karmf.net.*', 'https?://.*vezhalive.sentry.io.*' },
+        nil,
+        fireIf(zsuBrowser),
+      },
+      -- dev http://localhost:8080
+      { { '.*localhost.*', '.*127%.0%.0%.1.*' }, nil, fireIf(devBrowser) },
       --
-      { 'https?://.*maps%.google%.com.*',   defBrowser },
-      { 'https?://.*meet.google.com/.*',    googleBrowser,          fireIf(googleBrowser) },
-      { 'https?://.*chat.google.com/.*',    googleBrowser,          fireIf(googleBrowser) },
-      --
-      { 'https?://.*otpay.com.ua.*',        myBrowser,              fireIf(myBrowser) },
-      --
-      { 'https?://.*github.com/vezhadev.*', defBrowser,             fireIf(defBrowser) },
-      { 'https?://.*vishnu.karmf.net.*',    zsuBrowser,             fireIf(zsuBrowser) },
-      { 'https?://.*vezhalive.sentry.io.*', zsuBrowser,             fireIf(zsuBrowser) },
+      {
+        { 'https?://.*meet.google.com/.*', 'https?://.*chat.google.com/.*' },
+        nil,
+        fireIf(googleBrowser),
+      },
+      -- bank
+      { 'https?://.*otpay.com.ua.*', openFFContainer('Banking') },
+      -- youtube
+      {
+        { 'https?://.*youtube.com.*', 'https?://.*maps%.google%.com.*' },
+        openFFContainer('Personal'),
+      },
     },
     url_redir_decoders = {
       {
@@ -121,21 +164,10 @@ Install:andUse('URLDispatcher', {
         'zoommtg://zoom.us/join?confno=%1&pwd=%2',
         true,
       },
-      {
-        'Telegram URLs',
-        'https?://t.me/(.*)',
-        'tg://t.me/%1',
-        true,
-      },
-      {
-        'Fix broken Preview anchor URLs',
-        '%%23',
-        '#',
-        false,
-        'Preview',
-      },
+      { 'Telegram URLs', 'https?://t.me/(.*)', 'tg://t.me/%1', true },
+      { 'Fix broken Preview anchor URLs', '%%23', '#', false, 'Preview' },
     },
-    default_handler = defBrowser,
+    default_handler = defBrowser, -- create function here
   },
 })
 

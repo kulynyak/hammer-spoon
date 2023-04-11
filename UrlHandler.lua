@@ -10,7 +10,7 @@ obj.license = 'MIT - https://opensource.org/licenses/MIT'
 --- UrlHandler.logger
 --- Variable
 --- Logger object used within the Spoon. Can be accessed to set the default log level for the messages coming from the Spoon.
-obj.logger = hs.logger.new 'UrlHandler'
+obj.logger = hs.logger.new('UrlHandler')
 
 --- UrlHandler._predefinedBrowsers
 --- Variable
@@ -145,9 +145,8 @@ function obj:_processSelectedItem(url)
 end
 
 function obj:show(url)
-  local selectorobj = hs.chooser.new(
-    hs.fnutils.partial(self:_processSelectedItem(url))
-  )
+  local selectorobj =
+    hs.chooser.new(hs.fnutils.partial(self:_processSelectedItem(url)))
   selectorobj:choices(
     hs.fnutils.partial(self._populateChooser, self, self._activeBrowsers)
   )

@@ -1,5 +1,6 @@
-local log = hs.logger.new 'apps'
-local hyperModeAppMappings = require 'apps-def'
+local log = hs.logger.new('apps')
+
+local hyperModeAppMappings = require('apps-def')
 
 local function switchOrHide(app)
   local curApp = hs.application.frontmostApplication()

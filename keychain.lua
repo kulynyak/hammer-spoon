@@ -1,4 +1,4 @@
-local util = require 'util'
+local util = require('util')
 local keyUpDown = util.keyUpDown
 
 local obj = {}
@@ -9,7 +9,7 @@ obj.name = 'Keychain'
 obj.version = '0.1'
 obj.author = 'Andriy Kulynyak <kulynyak@gmail.com>'
 obj.license = 'MIT - https://opensource.org/licenses/MIT'
-obj.logger = hs.logger.new 'keychain'
+obj.logger = hs.logger.new('keychain')
 
 --- Keychain:read(label, jsonKey)
 --- Method
