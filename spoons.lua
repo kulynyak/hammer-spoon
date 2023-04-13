@@ -132,19 +132,26 @@ Install:andUse('URLDispatcher', {
       -- zsu
       {
         { 'https?://.*vishnu.karmf.net.*', 'https?://.*vezhalive.sentry.io.*' },
-        nil,
+        zsuBrowser,
         fireIf(zsuBrowser),
       },
       -- dev http://localhost:8080
-      { { '.*localhost.*', '.*127%.0%.0%.1.*' }, nil, fireIf(devBrowser) },
+      {
+        { '.*localhost.*', '.*127%.0%.0%.1.*' },
+        devBrowser,
+        fireIf(devBrowser),
+      },
       --
       {
         { 'https?://.*meet.google.com/.*', 'https?://.*chat.google.com/.*' },
-        nil,
+        defBrowser,
         fireIf(googleBrowser),
       },
       -- bank
-      { 'https?://.*otpay.com.ua.*', openFFContainer('Banking') },
+      {
+        { 'https?://.*otpay.com.ua.*', 'https?://.*otpsmart.com.ua.*' },
+        openFFContainer('Banking'),
+      },
       -- youtube
       {
         { 'https?://.*youtube.com.*', 'https?://.*maps%.google%.com.*' },
