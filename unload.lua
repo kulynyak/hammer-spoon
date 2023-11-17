@@ -1,4 +1,4 @@
-local unload = require 'unload-apps'
+local unload = require('unload-apps')
 
 local function unloadIt(app)
   local appObj = hs.application.get(app)

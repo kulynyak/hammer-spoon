@@ -21,19 +21,19 @@ local hyper = { 'command', 'option', 'shift', 'control' }
 
 local Install = spoon.SpoonInstall
 
-Install:andUse('Commander')
+-- Install:andUse('Commander')
 
-Install:andUse('HoldToQuit', {
-  start = true,
-})
+-- Install:andUse('HoldToQuit', {
+--   start = true,
+-- })
 
 Install:andUse('Caffeine')
 local caffeine = spoon.Caffeine:start()
--- caffeine.clicked()
+caffeine.clicked()
 
-Install:andUse('BingDaily')
+-- Install:andUse('BingDaily')
 
--- Install:andUse('RoundedCorners', { start = true })
+Install:andUse('RoundedCorners', { start = true })
 
 Install:andUse('TextClipboardHistory', {
   start = true,
@@ -61,20 +61,27 @@ Install:andUse('TextClipboardHistory', {
 -- })
 
 local chrome = 'com.google.Chrome'
--- local opera = "com.operasoftware.Opera"
+-- local opera = 'com.operasoftware.Opera'
 -- local safari = 'com.apple.Safari'
 local firefox = 'org.mozilla.firefox'
 -- local firefoxDev = "org.mozilla.firefoxdeveloperedition"
 -- local vivaldi = 'com.vivaldi.Vivaldi'
 -- local brave = 'com.brave.Browser'
-local edge = 'com.microsoft.edgemac'
+-- local edge = 'com.microsoft.edgemac'
+local arc = 'company.thebrowser.Browser'
 
+-- local defBrowser = opera
 -- local defBrowser = safari
+-- local defBrowser = firefox
 local defBrowser = firefox
-local devBrowser = chrome
+-- local devBrowser = chrome
+local devBrowser = arc
 -- local myBrowser = firefox
-local zsuBrowser = chrome
-local googleBrowser = edge
+local myBrowser = firefox
+-- local zsuBrowser = chrome
+local zsuBrowser = arc
+-- local googleBrowser = chrome
+local googleBrowser = arc
 
 local function executeApplescript(appBandle, args)
   local appName = hs.application.get(appBandle):name()
@@ -128,10 +135,27 @@ Install:andUse('URLDispatcher', {
       { 'zoommtg:', 'us.zoom.xos' },
       { 'tg:', 'ru.keepcoder.Telegram' },
       -- vezha
-      { 'https://github.com/vezhadev/.*', openFFContainer('Zsu') },
+      {
+        {
+          'https://identity.ganesha.karmf.net/admin/.*',
+          'https?://github.com/vezhadev/.*',
+          'https?://github.com/orgs/vezhadev/.*',
+          'https?://.*mil.ua/.*',
+          'https?://grafana.*/explore.*',
+          'https?://data.*/graphql/.*',
+          'https?://.*nextcloud.karmf.net/.*',
+          'https?://.*.mq.eu-central-1.amazonaws.com/.*',
+          'https?://.*forms.office.com/.*',
+        },
+        openFFContainer('Zsu'),
+      },
       -- zsu
       {
-        { 'https?://.*vishnu.karmf.net.*', 'https?://.*vezhalive.sentry.io.*' },
+        {
+          'https?://.*vezha.live/.*',
+          'https?://.*karmf.net/.*',
+          'https?://.*vezhalive.sentry.io/.*',
+        },
         zsuBrowser,
         fireIf(zsuBrowser),
       },
@@ -144,7 +168,7 @@ Install:andUse('URLDispatcher', {
       --
       {
         { 'https?://.*meet.google.com/.*', 'https?://.*chat.google.com/.*' },
-        defBrowser,
+        googleBrowser,
         fireIf(googleBrowser),
       },
       -- bank

@@ -27,7 +27,7 @@ obj.logger = hs.logger.new('keychain')
 function obj:read(label, jsonKey)
   local cmd = '/usr/bin/security 2>&1 find-generic-password -wl '
     .. label
-    .. " | jq -r '."
+    .. " | xxd -r -p | jq -r '."
     .. jsonKey
     .. "'"
   local output = hs.execute(cmd, true)

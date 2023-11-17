@@ -1,3 +1,4 @@
+require('hs.ipc')
 -- hs.logger.defaultLogLevel = "debug"
 hs.logger.defaultLogLevel = 'nothing'
 local log = hs.logger.new('init')
@@ -6,16 +7,29 @@ local hyper = { 'command', 'option', 'shift', 'control' }
 local coc = { 'control', 'option', 'command' }
 
 require('delete-words')
-require('windows')
+-- require('windows')
 require('spoons')
 require('launch')
 require('notify')
 
 -- require 'signal-watcher'
-
--- switcher_space = hs.window.switcher.new(hs.window.filter.new():setCurrentSpace(true):setDefaultFilter{})
--- hs.hotkey.bind('alt','tab',function()switcher_space:next()end)
--- hs.hotkey.bind('alt-shift','tab',function()switcher_space:previous()end)
+hs.window.switcher.ui.fontName = 'Lucida Grande'
+hs.window.switcher.ui.textSize = 12
+hs.window.switcher.ui.textColor = { 1, 1, 1 }
+hs.window.switcher.ui.titleBackgroundColor = { 0, 0, 0, 0 }
+hs.window.switcher.ui.showThumbnails = true
+hs.window.switcher.ui.thumbnailSize = 128
+hs.window.switcher.ui.highlightColor = { 100 / 255, 149 / 255, 237 / 255, 1 }
+hs.window.switcher.ui.backgroundColor = { 0.4, 0.4, 0.4, 0.6 }
+hs.window.switcher.ui.showSelectedThumbnail = false
+hs.window.switcher.ui.onlyActiveApplication = false
+local switcher_space = hs.window.switcher.new()
+hs.hotkey.bind('alt', 'tab', function()
+  switcher_space:next()
+end)
+hs.hotkey.bind('alt', '`', function()
+  switcher_space:previous()
+end)
 
 -- setup apps {{{
 require('apps')(hyper)
@@ -75,7 +89,7 @@ hs.window.setShadows(false)
 -- }}}
 
 -- mute on wake {{{
-local muteSound = false
+local muteSound = true
 function muteOnWake(eventType)
   if eventType == hs.caffeinate.watcher.systemDidWake then
     local output = hs.audiodevice.defaultOutputDevice()
@@ -89,10 +103,7 @@ caffeinateWatcher:start()
 
 -- force to switch desktop keyboard layout after start {{{
 hs.keycodes.setLayout('ABC')
-kbdTable = {
-  en = 'ABC',
-  uk = 'Ukrainian',
-}
+kbdTable = { en = 'ABC', uk = 'Ukrainian' }
 function setKbd(src)
   keyL = kbdTable[src]
   hs.keycodes.setLayout(keyL)
@@ -128,13 +139,13 @@ hs.hotkey.bind(
   coc,
   'u',
   nil,
-  hs.fnutils.partial(kc.pasteValue, kc, 'lohika.vpn', 'username')
+  hs.fnutils.partial(kc.pasteValue, kc, 'vpn.infra', 'username')
 )
 hs.hotkey.bind(
   coc,
   'p',
   nil,
-  hs.fnutils.partial(kc.pasteValue, kc, 'lohika.vpn', 'password')
+  hs.fnutils.partial(kc.pasteValue, kc, 'vpn.infra', 'password')
 )
 --- }}}
 
@@ -146,13 +157,18 @@ hs.hotkey.bind(
 -- Use coc + ` to reload Hammerspoon config {{{
 hs.hotkey.bind(coc, '`', nil, hs.reload)
 hs.notify
-  .new({
-    title = 'Hammerspoon',
-    informativeText = 'Ready to rock',
-  })
+  .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
   :send()
 -- }}}
 
 -- Use coc + ` to reload Hammerspoon config {{{
 hs.hotkey.bind(coc, '6', nil, hs.toggleConsole)
 -- }}}
+
+-- local notifications = require('notifications')
+
+-- -- Start the notifications module
+-- notifications.start()
+
+-- Stop the notifications module
+-- notifications.stop()
