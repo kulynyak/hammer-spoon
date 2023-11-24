@@ -6,7 +6,7 @@ local log = hs.logger.new('init')
 local hyper = { 'command', 'option', 'shift', 'control' }
 local coc = { 'control', 'option', 'command' }
 
-require('delete-words')
+-- require('delete-words') -- conflicts with Astronvim/NvChad
 -- require('windows')
 require('spoons')
 require('launch')
