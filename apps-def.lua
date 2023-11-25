@@ -3,9 +3,10 @@
 
 return {
   -- { hotkey, app-path, kbd-layout },
-  -- { 'r', '/Applications/Safari.app', nil },
+  { 'r', '/Applications/Safari.app', nil },
   -- { '`', '/Applications/Safari.app', nil },
   -- { '1', '/Applications/Microsoft Teams.app', nil },
+  { '1', '/Applications/Microsoft Teams (work or school).app', nil },
   -- { '2', '/Applications/zoom.us.app', 'en' },
   -- { '3', '/Applications/DataGrip.app', 'en' },
   { 'space', '/System/Library/CoreServices/Finder.app', 'en' },
@@ -15,7 +16,7 @@ return {
   -- { '`', '/Applications/iTerm.app', 'en' },
   { 'return', '/Applications/Wezterm.app', 'en' },
   -- { 'a', '/System/Applications/Utilities/Activity Monitor.app', 'en' },
-  { 'a', '/Applications/Arc.app', 'nil' },
+  -- { 'a', '/Applications/Arc.app', 'nil' },
   -- { '`', '/Applications/Arc.app', nil },
   -- { 'b', '/Applications/Brave Browser.app', nil },
   { 'c', '/Applications/Visual Studio Code.app', 'en' },

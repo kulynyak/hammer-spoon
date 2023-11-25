@@ -131,7 +131,7 @@ Install:andUse('URLDispatcher', {
   config = {
     url_patterns = {
       -- messingers
-      { 'msteams:', 'com.microsoft.teams' },
+      { 'msteams:', 'com.microsoft.teams2' },
       { 'zoommtg:', 'us.zoom.xos' },
       { 'tg:', 'ru.keepcoder.Telegram' },
       -- vezha
