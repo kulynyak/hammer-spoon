@@ -6,7 +6,8 @@ return {
   { 'r', '/Applications/Safari.app', nil },
   -- { '`', '/Applications/Safari.app', nil },
   -- { '1', '/Applications/Microsoft Teams.app', nil },
-  { '1', '/Applications/Microsoft Teams (work or school).app', nil },
+  -- { '1', '/Applications/Microsoft Teams (work or school).app', nil },
+  { '2', '/Applications/ChatGPT.app', 'en' },
   -- { '2', '/Applications/zoom.us.app', 'en' },
   -- { '3', '/Applications/DataGrip.app', 'en' },
   { 'space', '/System/Library/CoreServices/Finder.app', 'en' },
@@ -36,7 +37,7 @@ return {
   { 'n', '/Applications/Lens.app', 'en' },
   -- { 'k', '/System/Applications/Calendar.app', 'en' },с
   { 'k', '/Applications/KeePassXC.app', 'en' },
-  { 'o', '/Applications/Opera.app', nil },
+  { 'o', '/Applications/Obsidian.app', nil },
   -- { '`', '/Applications/Opera.app', nil },
   -- { 'v', '/Applications/Viber.app', 'uk' },
   -- { 's', '/Applications/Sourcetree.app', 'en' },
@@ -46,5 +47,6 @@ return {
   -- { '`', '/Applications/Vivaldi.app', nil },
   -- { 'x', '/Applications/FBReader.app', 'en' },
   -- { 'r', '/Applications/Grammarly Editor.app', 'en' },
+  { 'z', '/Applications/Zed.app', 'en' },
   -- { '7', '/System/Applications/System Preferences.app', 'en' },
 }

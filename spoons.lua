@@ -31,7 +31,7 @@ Install:andUse('Caffeine')
 local caffeine = spoon.Caffeine:start()
 caffeine.clicked()
 
--- Install:andUse('BingDaily')
+Install:andUse('BingDaily')
 
 Install:andUse('RoundedCorners', { start = true })
 
@@ -62,26 +62,26 @@ Install:andUse('TextClipboardHistory', {
 
 local chrome = 'com.google.Chrome'
 -- local opera = 'com.operasoftware.Opera'
--- local safari = 'com.apple.Safari'
+local safari = 'com.apple.Safari'
 local firefox = 'org.mozilla.firefox'
 -- local firefoxDev = "org.mozilla.firefoxdeveloperedition"
 -- local vivaldi = 'com.vivaldi.Vivaldi'
 -- local brave = 'com.brave.Browser'
 -- local edge = 'com.microsoft.edgemac'
-local arc = 'company.thebrowser.Browser'
+-- local arc = 'company.thebrowser.Browser'
 
 -- local defBrowser = opera
 -- local defBrowser = safari
 -- local defBrowser = firefox
 local defBrowser = firefox
 -- local devBrowser = chrome
-local devBrowser = arc
+local devBrowser = chrome
 -- local myBrowser = firefox
-local myBrowser = firefox
+local myBrowser = safari
 -- local zsuBrowser = chrome
-local zsuBrowser = arc
+local zsuBrowser = firefox
 -- local googleBrowser = chrome
-local googleBrowser = arc
+local googleBrowser = chrome
 
 local function executeApplescript(appBandle, args)
   local appName = hs.application.get(appBandle):name()
@@ -137,10 +137,13 @@ Install:andUse('URLDispatcher', {
       -- vezha
       {
         {
+          'https?://lab.volvo.mito/.*',
           'https://identity.ganesha.karmf.net/admin/.*',
           'https?://github.com/vezhadev/.*',
           'https?://github.com/orgs/vezhadev/.*',
+          'https?://.*mil.gov.ua/.*',
           'https?://.*mil.ua/.*',
+          'https?://.*oak.in.ua/.*',
           'https?://grafana.*/explore.*',
           'https?://data.*/graphql/.*',
           'https?://.*nextcloud.karmf.net/.*',
@@ -195,8 +198,19 @@ Install:andUse('URLDispatcher', {
         'zoommtg://zoom.us/join?confno=%1&pwd=%2',
         true,
       },
-      { 'Telegram URLs', 'https?://t.me/(.*)', 'tg://t.me/%1', true },
-      { 'Fix broken Preview anchor URLs', '%%23', '#', false, 'Preview' },
+      {
+        'Telegram URLs',
+        'https?://t.me/(.*)',
+        'tg://t.me/%1',
+        true,
+      },
+      {
+        'Fix broken Preview anchor URLs',
+        '%%23',
+        '#',
+        false,
+        'Preview',
+      },
     },
     default_handler = defBrowser, -- create function here
   },
