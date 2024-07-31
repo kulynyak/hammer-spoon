@@ -116,7 +116,7 @@ end
 --- Returns:
 ---  * None
 function obj:_populateChooser(browsers, predicateFn)
-  menuData = {}
+  local menuData = {}
   for _, item in ipairs(browsers) do
     -- self.logger.df("item = %s", hs.inspect(item))
     if filterFn and not predicateFn(item) then
