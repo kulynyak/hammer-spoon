@@ -8,7 +8,7 @@ return {
   -- { app-path, bundleID, hide, mode},
   -- comment
   -- { 'Notes', 'com.apple.Notes', true, 'All' },
-  { 'KeePassXC', 'org.keepassxc.keepassxc', true, 'All' },
+  -- { 'KeePassXC', 'org.keepassxc.keepassxc', true, 'All' },
   -- { 'Viber', 'com.viber.osx', true, 'All' },
   { 'WhatsApp', 'WhatsApp', true, 'All' },
   -- { 'Telegram', 'ru.keepcoder.Telegram', true, 'All' },
@@ -20,4 +20,5 @@ return {
   { 'Signal', 'org.whispersystems.signal-desktop', true, 'Work' },
   -- { 'Discord', 'com.hnc.Discord', true, 'Work' },
   -- { 'Notion', 'notion.id', true, 'All' },
+
 }
