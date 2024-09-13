@@ -9,7 +9,7 @@ return {
   -- { '1', '/Applications/Microsoft Teams (work or school).app', nil },
   { '2', '/Applications/ChatGPT.app', 'en' },
   -- { '2', '/Applications/zoom.us.app', 'en' },
-  -- { '3', '/Applications/DataGrip.app', 'en' },
+  { '3', '/Applications/AnythingLLM.app', 'en' },
   { 'space', '/System/Library/CoreServices/Finder.app', 'en' },
   -- { '`', '/System/Applications/Utilities/Terminal.app', 'en' },
   -- { '`', '/Applications/kitty.app', 'en' },
