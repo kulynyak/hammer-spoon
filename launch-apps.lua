@@ -10,7 +10,6 @@ return {
   -- { 'Notes', 'com.apple.Notes', true, 'All' },
   -- { 'KeePassXC', 'org.keepassxc.keepassxc', true, 'All' },
   -- { 'Viber', 'com.viber.osx', true, 'All' },
-  { 'WhatsApp', 'WhatsApp', true, 'All' },
   -- { 'Telegram', 'ru.keepcoder.Telegram', true, 'All' },
   { 'Calendar', 'com.apple.iCal', true, 'All' },
   { 'Mail', 'com.apple.mail', true, 'All' },
@@ -18,7 +17,7 @@ return {
   { 'Microsoft Teams', 'com.microsoft.teams2', true, 'Work' },
   -- { 'Slack', 'com.tinyspeck.slackmacgap', true, 'Work' },
   { 'Signal', 'org.whispersystems.signal-desktop', true, 'Work' },
+  { 'WhatsApp', 'WhatsApp', true, 'All' },
   -- { 'Discord', 'com.hnc.Discord', true, 'Work' },
   -- { 'Notion', 'notion.id', true, 'All' },
-
 }
