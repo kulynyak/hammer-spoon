@@ -141,6 +141,7 @@ Install:andUse('URLDispatcher', {
           'https://identity.ganesha.karmf.net/admin/.*',
           'https?://github.com/vezhadev/.*',
           'https?://github.com/orgs/vezhadev/.*',
+          'https?://github.com/orgs/gtakontur/.*',
           'https?://.*mil.gov.ua/.*',
           'https?://.*mil.ua/.*',
           'https?://.*oak.in.ua/.*',
