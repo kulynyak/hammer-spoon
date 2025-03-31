@@ -32,6 +32,7 @@ local isInTerminal = function()
     or app == 'Alacritty'
     or app == 'kitty'
     or app == 'WezTerm'
+    or app == 'Ghostty'
 end
 
 -- Use option + h to delete previous word
@@ -66,6 +67,7 @@ local wf = hs.window.filter.new():setFilters {
   kitty = false,
   Code = false,
   WezTerm = false,
+  Ghostty = false,
 }
 
 enableHotkeyForWindowsMatchingFilter(
