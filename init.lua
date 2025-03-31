@@ -27,7 +27,7 @@ local switcher_space = hs.window.switcher.new()
 hs.hotkey.bind('alt', 'tab', function()
   switcher_space:next()
 end)
-hs.hotkey.bind('alt', '`', function()
+hs.hotkey.bind({'alt','shift'}, 'tab', function()
   switcher_space:previous()
 end)
 
