@@ -125,7 +125,7 @@ end
 
 Install:andUse('URLDispatcher', {
   -- https://www.hammerspoon.org/Spoons/URLDispatcher.html
-  start = true,
+  start = false,
   -- Enable debug logging if you get unexpected behavior
   loglevel = 'info',
   config = {
@@ -133,32 +133,34 @@ Install:andUse('URLDispatcher', {
       -- messingers
       { 'msteams:', 'com.microsoft.teams2' },
       { 'zoommtg:', 'us.zoom.xos' },
-      { 'tg:', 'ru.keepcoder.Telegram' },
+      { 'tg:',      'ru.keepcoder.Telegram' },
       -- vezha
       {
         {
-          'https?://lab.volvo.mito/.*',
+          'https://lab.volvo.mito/.*',
           'https://identity.ganesha.karmf.net/admin/.*',
-          'https?://github.com/vezhadev/.*',
-          'https?://github.com/orgs/vezhadev/.*',
-          'https?://github.com/orgs/gtakontur/.*',
-          'https?://.*mil.gov.ua/.*',
-          'https?://.*mil.ua/.*',
-          'https?://.*oak.in.ua/.*',
-          'https?://grafana.*/explore.*',
-          'https?://data.*/graphql/.*',
-          'https?://.*nextcloud.karmf.net/.*',
-          'https?://.*.mq.eu-central-1.amazonaws.com/.*',
-          'https?://.*forms.office.com/.*',
+          'https://github.com/vezhadev/.*',
+          'https://github.com/orgs/vezhadev/.*',
+          'https://github.com/orgs/gtakontur/.*',
+          'https://.*mil.gov.ua/.*',
+          'https://.*mil.ua/.*',
+          'https://.*oak.in.ua/.*',
+          'https://grafana.*/explore.*',
+          'https://data.*/graphql/.*',
+          'https://.*nextcloud.karmf.net/.*',
+          'https://.*.mq.eu-central-1.amazonaws.com/.*',
+          'https://.*forms.office.com/.*',
+          'https://.*green-house-corp.atlassian.net/.*',
+          'https://.*id.atlassian.com/.*',
         },
         openFFContainer('Zsu'),
       },
       -- zsu
       {
         {
-          'https?://.*vezha.live/.*',
-          'https?://.*karmf.net/.*',
-          'https?://.*vezhalive.sentry.io/.*',
+          'https://.*vezha.live/.*',
+          'https://.*karmf.net/.*',
+          'https://.*vezhalive.sentry.io/.*',
         },
         zsuBrowser,
         fireIf(zsuBrowser),
