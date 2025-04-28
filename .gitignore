@@ -2,3 +2,4 @@ Spoons/**
 !Spoons/SpoonInstall.spoon/**
 **/.vscode/*
 .stfolder
+**/.history
