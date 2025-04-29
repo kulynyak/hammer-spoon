@@ -24,12 +24,12 @@ return {
     "All"
   },
   -- { 'Outlook', 'com.microsoft.Outlook', true, 'All' },
-  {
-    "Microsoft Teams",
-    "com.microsoft.teams2",
-    true,
-    "Work"
-  },
+  -- {
+  --   "Microsoft Teams",
+  --   "com.microsoft.teams2",
+  --   true,
+  --   "Work"
+  -- },
   -- { 'Slack', 'com.tinyspeck.slackmacgap', true, 'Work' },
   {
     "Signal",
