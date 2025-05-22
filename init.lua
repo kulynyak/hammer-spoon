@@ -13,27 +13,30 @@ require('launch')
 require('notify')
 
 -- require 'signal-watcher'
-hs.window.switcher.ui.fontName = 'Lucida Grande'
-hs.window.switcher.ui.textSize = 12
-hs.window.switcher.ui.textColor = { 1, 1, 1 }
-hs.window.switcher.ui.titleBackgroundColor = { 0, 0, 0, 0 }
-hs.window.switcher.ui.showThumbnails = true
-hs.window.switcher.ui.thumbnailSize = 128
-hs.window.switcher.ui.highlightColor = { 100 / 255, 149 / 255, 237 / 255, 1 }
-hs.window.switcher.ui.backgroundColor = { 0.4, 0.4, 0.4, 0.6 }
-hs.window.switcher.ui.showSelectedThumbnail = false
-hs.window.switcher.ui.onlyActiveApplication = false
-local switcher_space = hs.window.switcher.new()
-hs.hotkey.bind('alt', 'tab', function()
-  switcher_space:next()
-end)
-hs.hotkey.bind({'alt','shift'}, 'tab', function()
-  switcher_space:previous()
-end)
+
+-- hs.window.switcher.ui.fontName = 'Lucida Grande'
+-- hs.window.switcher.ui.textSize = 12
+-- hs.window.switcher.ui.textColor = { 1, 1, 1 }
+-- hs.window.switcher.ui.titleBackgroundColor = { 0, 0, 0, 0 }
+-- hs.window.switcher.ui.showThumbnails = true
+-- hs.window.switcher.ui.thumbnailSize = 128
+-- hs.window.switcher.ui.highlightColor = { 100 / 255, 149 / 255, 237 / 255, 1 }
+-- hs.window.switcher.ui.backgroundColor = { 0.4, 0.4, 0.4, 0.6 }
+-- hs.window.switcher.ui.showSelectedThumbnail = false
+-- hs.window.switcher.ui.onlyActiveApplication = false
+-- local switcher_space = hs.window.switcher.new()
+-- hs.hotkey.bind('alt', 'tab', function()
+--   switcher_space:next()
+-- end)
+-- hs.hotkey.bind({'alt','shift'}, 'tab', function()
+--   switcher_space:previous()
+-- end)
+
 
 -- setup apps {{{
 require('apps')(hyper)
 -- }}}
+
 
 -- setup keyboard layout fix {{{
 local kbl = require('kbl')
@@ -43,11 +46,12 @@ hs.hotkey.bind(hyper, '0', nil, kbl)
 -- setup translation {{{
 local wm = hs.webview.windowMasks
 local translator = require('PopupTranslateSelection')
+
 translator.popup_style = wm.utility
-  | wm.HUD
-  | wm.titled
-  | wm.closable
-  | wm.resizable
+    | wm.HUD
+    | wm.titled
+    | wm.closable
+    | wm.resizable
 translator:bindHotkeys({
   translate_uk_en = { hyper, '8' },
   translate_en_uk = { hyper, '9' },
@@ -157,8 +161,8 @@ hs.hotkey.bind(
 -- Use coc + ` to reload Hammerspoon config {{{
 hs.hotkey.bind(coc, '`', nil, hs.reload)
 hs.notify
-  .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
-  :send()
+    .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
+    :send()
 -- }}}
 
 -- Use coc + ` to reload Hammerspoon config {{{
