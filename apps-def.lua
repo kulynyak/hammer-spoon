@@ -68,9 +68,14 @@ return {
     nil
   },
   -- { 'f', '/Applications/Firefox Developer Edition.app', nil },
+  -- {
+  --   "g",
+  --   "/Applications/Google Chrome.app",
+  --   nil
+  -- },
   {
     "g",
-    "/Applications/Google Chrome.app",
+    "/Applications/Brave Browser.app",
     nil
   },
   -- { 'i', '/Applications/IntelliJ IDEA.app', 'en' },
@@ -139,12 +144,12 @@ return {
   -- { '`', '/Applications/Vivaldi.app', nil },
   -- { 'x', '/Applications/FBReader.app', 'en' },
   -- { 'r', '/Applications/Grammarly Editor.app', 'en' },
-  { 'z', '/Applications/Zed.app', nil },
-  -- {
-  --   "z",
-  --   "/Applications/Zed Preview.app",
-  --   nil
-  -- },
+  -- { 'z', '/Applications/Zed.app', nil },
+  {
+    "z",
+    "/Applications/Zed Preview.app",
+    nil
+  },
   {
     "=",
     "/System/Applications/System Settings.app",

@@ -22,9 +22,9 @@ end
 -- local uk_pc = "'йцукенгшщзхїґфивапролджєячсмітьбю.ʼ\"№;:?ЙЦУКЕНГШЩЗХЇҐФИВАПРОЛДЖЄЯЧСМІТЬБЮ,"
 
 local en_eu =
-  'qwertyuiop[]asdfghjkl;\'\\`zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:"|~ZXCVBNM<>?'
+'qwertyuiop[]asdfghjkl;\'\\`zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:"|~ZXCVBNM<>?&'
 local uk =
-  'йцукенгшщзхїфівапролджєʼґячсмитьбю.ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄ₴ҐЯЧСМИТЬБЮ,'
+'йцукенгшщзхїфівапролджєʼґячсмитьбю.ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄ₴ҐЯЧСМИТЬБЮ,?'
 -- local uk = "йцукенгшщзхїфівапролджєґ'ячсмитьбю/ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄҐ~ЯЧСМИТЬБЮ?"
 
 local enuk = makeTab(en_eu, uk)
