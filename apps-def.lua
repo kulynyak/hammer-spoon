@@ -21,8 +21,8 @@ return {
   },
   {
     '3',
-    '/Applications/ChatGPT.app',
-    'en',
+    '/System/Applications/Reminders.app',
+    'ua',
   },
   -- { '2', '/Applications/zoom.us.app', 'en' },
   {
