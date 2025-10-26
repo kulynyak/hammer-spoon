@@ -31,13 +31,13 @@ return {
     nil,
   },
   -- { '`', '/System/Applications/Utilities/Terminal.app', 'en' },
-  -- { '`', '/Applications/kitty.app', 'en' },
+  { 'return', '/Applications/kitty.app', 'en' },
   -- { 'return', '/Applications/Wezterm.app', 'en' },
-  {
-    'return',
-    '/Applications/Ghostty.app',
-    'en',
-  },
+  -- {
+  --   'return',
+  --   '/Applications/Ghostty.app',
+  --   'en',
+  -- },
   -- { 'a', '/System/Applications/Utilities/Activity Monitor.app', 'en' },
   {
     'a',
