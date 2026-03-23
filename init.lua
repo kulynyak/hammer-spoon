@@ -32,15 +32,15 @@ require('notify')
 --   switcher_space:previous()
 -- end)
 
-
 -- setup apps {{{
 require('apps')(hyper)
 -- }}}
 
-
 -- setup keyboard layout fix {{{
 local kbl = require('kbl')
-hs.hotkey.bind(hyper, '0', nil, kbl)
+hs.hotkey.bind(hyper, '0', nil, kbl.fix)
+hs.hotkey.bind(hyper, '6', nil, kbl.toUpper)
+hs.hotkey.bind(hyper, '7', nil, kbl.toLower)
 -- }}}
 
 -- setup translation {{{
@@ -48,10 +48,10 @@ local wm = hs.webview.windowMasks
 local translator = require('PopupTranslateSelection')
 
 translator.popup_style = wm.utility
-    | wm.HUD
-    | wm.titled
-    | wm.closable
-    | wm.resizable
+  | wm.HUD
+  | wm.titled
+  | wm.closable
+  | wm.resizable
 translator:bindHotkeys({
   translate_uk_en = { hyper, '8' },
   translate_en_uk = { hyper, '9' },
@@ -161,8 +161,8 @@ hs.hotkey.bind(
 -- Use coc + ` to reload Hammerspoon config {{{
 hs.hotkey.bind(coc, '`', nil, hs.reload)
 hs.notify
-    .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
-    :send()
+  .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
+  :send()
 -- }}}
 
 -- Use coc + ` to reload Hammerspoon config {{{

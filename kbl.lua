@@ -22,9 +22,9 @@ end
 -- local uk_pc = "'йцукенгшщзхїґфивапролджєячсмітьбю.ʼ\"№;:?ЙЦУКЕНГШЩЗХЇҐФИВАПРОЛДЖЄЯЧСМІТЬБЮ,"
 
 local en_eu =
-'qwertyuiop[]asdfghjkl;\'\\`zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:"|~ZXCVBNM<>?&'
+  'qwertyuiop[]asdfghjkl;\'\\`zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:"|~ZXCVBNM<>?&'
 local uk =
-'йцукенгшщзхїфівапролджєʼґячсмитьбю.ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄ₴ҐЯЧСМИТЬБЮ,?'
+  'йцукенгшщзхїфівапролджєʼґячсмитьбю.ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄ₴ҐЯЧСМИТЬБЮ,?'
 -- local uk = "йцукенгшщзхїфівапролджєґ'ячсмитьбю/ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄҐ~ЯЧСМИТЬБЮ?"
 
 local enuk = makeTab(en_eu, uk)
@@ -98,4 +98,69 @@ local function fix()
   end)
 end
 
-return fix
+-- Use the utf8 library you already required at the top: local utf8 = require('hs.utf8')
+
+local function transformCase(text, mode)
+  if not text or text == '' then
+    return ''
+  end
+
+  -- Use macOS styledtext engine for perfect UTF-8 casing
+  local st = hs.styledtext.new(text)
+  local transformed
+
+  if mode == 'upper' then
+    transformed = st:upper()
+  elseif mode == 'lower' then
+    transformed = st:lower()
+  else
+    -- Toggle logic: Check the first character using your existing utf8.sub
+    local first = utf8.sub(text, 1, 1)
+    local upperFirst = hs.styledtext.new(first):upper():getString()
+
+    if first == upperFirst then
+      transformed = st:lower()
+    else
+      transformed = st:upper()
+    end
+  end
+
+  return transformed:getString()
+end
+
+local function runCaseFix(mode)
+  local original = hs.pasteboard.getContents()
+
+  -- Use keycodes 8 (C) and 9 (V) to avoid the "key not found" warning
+  hs.eventtap.keyStroke({ 'cmd' }, 8)
+
+  hs.timer.doAfter(0.2, function()
+    local selected = hs.pasteboard.getContents()
+    if not selected or selected == original then
+      return
+    end
+
+    local newText = transformCase(selected, mode)
+    hs.pasteboard.setContents(newText)
+
+    hs.eventtap.keyStroke({ 'cmd' }, 9)
+
+    hs.timer.doAfter(0.2, function()
+      hs.pasteboard.setContents(original)
+    end)
+  end)
+end
+
+-- Create a table to export the functions
+local M = {}
+
+-- Export the original layout fixer
+M.fix = fix
+M.toUpper = function()
+  runCaseFix('upper')
+end
+M.toLower = function()
+  runCaseFix('lower')
+end
+
+return M

@@ -12,16 +12,16 @@ return {
   -- { 'Viber', 'com.viber.osx', true, 'All' },
   -- { 'Telegram', 'ru.keepcoder.Telegram', true, 'All' },
   {
-    "Calendar",
-    "com.apple.iCal",
+    'Calendar',
+    'com.apple.iCal',
     true,
-    "All"
+    'All',
   },
   {
-    "Mail",
-    "com.apple.mail",
+    'Mail',
+    'com.apple.mail',
     true,
-    "All"
+    'All',
   },
   -- { 'Outlook', 'com.microsoft.Outlook', true, 'All' },
   -- {
@@ -32,23 +32,23 @@ return {
   -- },
   -- { 'Slack', 'com.tinyspeck.slackmacgap', true, 'Work' },
   {
-    "Signal",
-    "org.whispersystems.signal-desktop",
+    'Signal',
+    'org.whispersystems.signal-desktop',
     true,
-    "Work"
+    'Work',
   },
   {
-    "WhatsApp",
-    "WhatsApp",
+    'WhatsApp',
+    'WhatsApp',
     true,
-    "All"
+    'All',
   },
   -- { 'Discord', 'com.hnc.Discord', true, 'Work' },
   -- { 'Notion', 'notion.id', true, 'All' },
-  {
-    "Perplexity",
-    "ai.perplexity.mac",
-    true,
-    "All"
-  }
+  -- {
+  --   "Perplexity",
+  --   "ai.perplexity.mac",
+  --   true,
+  --   "All"
+  -- }
 }
