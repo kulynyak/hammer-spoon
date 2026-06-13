@@ -1,6 +1,6 @@
 local urlevent = require 'hs.urlevent'
 
-urlevent.bind('task-completed', function(eventName, params)
+urlevent.bind('task-completed', function(_, params)
   local message = params['message']
   local timeout = tonumber(params['timeout'])
 
@@ -12,13 +12,14 @@ urlevent.bind('task-completed', function(eventName, params)
     timeout = 20
   end
 
-  local notification = hs.notify.new(function() end, {
+  local notification = hs.notify.new({
     autoWithdraw = true,
     title = 'Terminal Notification',
     informativeText = message,
     hasActionButton = false,
   })
   notification:send()
+
 
   if timeout > 0 then
     hs.timer.doAfter(timeout, function()

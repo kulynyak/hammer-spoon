@@ -168,11 +168,3 @@ hs.notify
 -- Use coc + ` to reload Hammerspoon config {{{
 hs.hotkey.bind(coc, '6', nil, hs.toggleConsole)
 -- }}}
-
--- local notifications = require('notifications')
-
--- -- Start the notifications module
--- notifications.start()
-
--- Stop the notifications module
--- notifications.stop()
