@@ -1,3 +1,9 @@
+--- windows.lua — Window positioning and layout mode.
+--  Extends hs.window with 12 positioning functions (left/right/up/down,
+--  quadrant, center, percentage splits) and a modal layout mode.
+--  Layout mode is activated by ctrl+alt+cmd+s, then Vim-style keys.
+
+-- Disable animations globally for instant window moves
 hs.window.animationDuration = 0
 window = hs.getObjectMetatable 'hs.window'
 
@@ -200,12 +206,11 @@ function window.right60(win)
   local max = screen:frame()
 
   f.x = max.x + (max.w * 0.4)
-  f.y = max.y
   f.w = max.w * 0.6
   f.h = max.h
   win:setFrame(f)
 end
-
+-- Move window to next screen (wraps around)
 function window.nextScreen(win)
   local currentScreen = win:screen()
   local allScreens = hs.screen.allScreens()
@@ -218,7 +223,8 @@ function window.nextScreen(win)
     win:moveToScreen(allScreens[1])
   end
 end
-
+-- F16 is a placeholder key that never appears on a real keyboard;
+-- the modal is only entered via the bound trigger hotkey.
 local windowLayoutMode = hs.hotkey.modal.new({}, 'F16')
 
 windowLayoutMode.entered = function()
@@ -228,7 +234,7 @@ windowLayoutMode.exited = function()
   windowLayoutMode.statusMessage:hide()
 end
 
--- Bind the given key to call the given function and exit WindowLayout mode
+-- Bind a key that performs an action and immediately exits Layout Mode
 function windowLayoutMode.bindWithAutomaticExit(mode, modifiers, key, fn)
   mode:bind(modifiers, key, function()
     mode:exit()
@@ -242,6 +248,7 @@ if not status then
   windowMappings = require 'windows-bindings-defaults'
 end
 
+-- Convert modifier array to human-readable symbol string (e.g. {"ctrl","alt"} → "⌃⌥")
 local modifiers = windowMappings.modifiers
 local showHelp = windowMappings.showHelp
 local trigger = windowMappings.trigger

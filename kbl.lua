@@ -1,7 +1,14 @@
+--- kbl.lua — Keyboard layout fixer.
+--  Transforms selected text between keyboard layouts (EN↔UK).
+--  Uses clipboard copy+paste with polling for reliability.
+--  Also exports toUpper/toLower via macOS styledtext engine.
 
 local utf8 = require('hs.utf8')
 local withCopiedSelection = require('util').withCopiedSelection
 
+-- Safe utf8.sub that handles j past the end of the string.
+-- Falls back to #s (byte length) when utf8.offset returns nil.
+-- Only used internally; overrides hs.utf8.sub for convenience.
 function utf8.sub(s, i, j)
   i = utf8.offset(s, i)
   if not i then return nil end
@@ -14,6 +21,8 @@ function utf8.sub(s, i, j)
   return string.sub(s, i, j)
 end
 
+-- Build a character-to-character map from two equal-length strings.
+-- `from[i]` maps to `to[i]` for every position.
 local function makeTab(from, to)
   local map = {}
   for i = 1, utf8.len(from), 1 do
@@ -23,12 +32,18 @@ local function makeTab(from, to)
   return map
 end
 
+-- Keyboard layouts as linear strings, positions correspond 1:1.
+-- en = US/ABC physical key sequence, uk = Ukrainian-Typography equivalent.
 local en = "qwertyuiop[]\\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?"
 local uk = 'йцукенгшщзхї/фівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇ|ФІВАПРОЛДЖЄЯЧСМИТЬБЮ,'
 
 local enuk = makeTab(en, uk)
 local uken = makeTab(uk, en)
 
+-- Transform text between English and Ukrainian keyboard layouts.
+-- Builds both candidate results concurrently using table.concat (O(N)) and
+-- picks the one with more successful mappings (higher match count wins).
+-- Returns: transformedText, targetLayoutName
 local function transform(text)
   -- TODO: try to recognize direction for more precise transformation
   local t1, t2 = {}, {}
@@ -57,7 +72,6 @@ local function transform(text)
   end
 end
 
-
 local function fix()
   withCopiedSelection(function(selectedText, originalClipboardContents)
     local transformedText, targetLayout = transform(selectedText)
@@ -70,7 +84,6 @@ local function fix()
     end)
   end)
 end
-
 
 local function transformCase(text, mode)
   if not text or text == '' then
@@ -87,6 +100,7 @@ local function transformCase(text, mode)
     transformed = st:lower()
   else
     -- Toggle logic: find first cased character, flip its case
+    -- Iterates because the first char might be a digit/symbol with no case.
     for i = 1, utf8.len(text) do
       local c = utf8.sub(text, i, i)
       local sc = hs.styledtext.new(c)
@@ -119,10 +133,7 @@ local function runCaseFix(mode)
   end)
 end
 
--- Create a table to export the functions
 local M = {}
-
--- Export the original layout fixer
 M.fix = fix
 M.toUpper = function()
   runCaseFix('upper')

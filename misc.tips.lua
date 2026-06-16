@@ -1,4 +1,4 @@
--- open folder
+-- misc.tips.lua — Miscellaneous utility keybindings.
 local function directoryLaunchKeyRemap(mods, key, dir)
   hs.hotkey.bind(mods, key, function()
     local shell_command = 'open ' .. dir

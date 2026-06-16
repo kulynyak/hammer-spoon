@@ -1,3 +1,8 @@
+--- launch.lua — Launch and re-launch background apps.
+--  Runs on config load and on system wake via init.lua's wakeHandler.
+--  Hides app windows after launch, retrying up to 15 times because some
+--  apps (Mail, Calendar) re-show their window after initial hide.
+
 local launch = require 'launch-apps'
 hs.application.enableSpotlightForNameSearches(true)
 

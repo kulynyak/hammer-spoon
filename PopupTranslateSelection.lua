@@ -7,6 +7,7 @@
 --- Download: [https://github.com/Hammerspoon/Spoons/raw/master/Spoons/PopupTranslateSelection.spoon.zip](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/PopupTranslateSelection.spoon.zip)
 
 
+-- withCopiedSelection imported from util.lua (shared clipboard polling)
 local withCopiedSelection = require('util').withCopiedSelection
 local obj = {}
 obj.__index = obj

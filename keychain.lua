@@ -1,4 +1,8 @@
 
+--- keychain.lua — Read and paste values from macOS login keychain.
+--  Values are expected as JSON entries under a generic password label.
+--  Uses `/usr/bin/security` + `jq` to extract fields.
+
 local obj = {}
 obj.__index = obj
 

@@ -1,3 +1,7 @@
+--- util.lua — Shared utility functions.
+--  keyUpDown:  wrapper around hs.eventtap.keyStroke with 0 delay
+--  withCopiedSelection: async clipboard polling for Cmd+C operations
+
 local keyUpDown = function(modifiers, key)
   -- Un-comment & reload config to log each keystroke that we're triggering
   -- log.d('Sending keystroke:', hs.inspect(modifiers, key)

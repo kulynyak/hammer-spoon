@@ -1,3 +1,7 @@
+--- apps.lua — Hyper-key app launcher and switcher.
+--  Binds hotkeys (e.g. Hyper+W → WhatsApp) using apps-def.lua.
+--  Toggle behavior: pressing the same key again hides the app.
+
 local log = hs.logger.new('apps')
 
 local hyperModeAppMappings = require('apps-def')

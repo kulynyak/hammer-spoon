@@ -1,10 +1,17 @@
+--- init.lua — Hammerspoon config entry point.
+--  Hyper key = Cmd+Opt+Shift+Ctrl (all four)
+--  Coc key  = Ctrl+Opt+Cmd (three-finger chord)
 require('hs.ipc')
 -- hs.logger.defaultLogLevel = "debug"
 hs.logger.defaultLogLevel = 'nothing'
 local log = hs.logger.new('init')
 
+-- Modifier chords used throughout the config
+-- hyper (4-finger) for app switching, window layout, keyboard fix
+-- coc (3-finger) for system actions: lock, hide, paste, reload
 local hyper = { 'command', 'option', 'shift', 'control' }
 local coc = { 'control', 'option', 'command' }
+
 
 -- require('delete-words') -- conflicts with Astronvim/NvChad
 -- require('windows')
@@ -14,23 +21,6 @@ require('notify')
 
 -- require 'signal-watcher'
 
--- hs.window.switcher.ui.fontName = 'Lucida Grande'
--- hs.window.switcher.ui.textSize = 12
--- hs.window.switcher.ui.textColor = { 1, 1, 1 }
--- hs.window.switcher.ui.titleBackgroundColor = { 0, 0, 0, 0 }
--- hs.window.switcher.ui.showThumbnails = true
--- hs.window.switcher.ui.thumbnailSize = 128
--- hs.window.switcher.ui.highlightColor = { 100 / 255, 149 / 255, 237 / 255, 1 }
--- hs.window.switcher.ui.backgroundColor = { 0.4, 0.4, 0.4, 0.6 }
--- hs.window.switcher.ui.showSelectedThumbnail = false
--- hs.window.switcher.ui.onlyActiveApplication = false
--- local switcher_space = hs.window.switcher.new()
--- hs.hotkey.bind('alt', 'tab', function()
---   switcher_space:next()
--- end)
--- hs.hotkey.bind({'alt','shift'}, 'tab', function()
---   switcher_space:previous()
--- end)
 
 -- setup apps {{{
 require('apps')(hyper)
@@ -158,18 +148,14 @@ hs.hotkey.bind(
 )
 --- }}}
 
--- {{{
--- Test
--- require('test')
--- }}}
 
--- Use coc + ` to reload Hammerspoon config {{{
+-- Reload config {{{
 hs.hotkey.bind(coc, '`', nil, hs.reload)
 hs.notify
     .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
     :send()
 -- }}}
 
--- Use coc + ` to reload Hammerspoon config {{{
+-- Toggle console {{{
 hs.hotkey.bind(coc, '6', nil, hs.toggleConsole)
 -- }}}

@@ -1,3 +1,7 @@
+--- status-message.lua — On-screen status overlay.
+--  Draws a rounded-rect message in the bottom-right of the primary screen.
+--  Used by windowLayoutMode to show active mode indicator.
+
 local drawing = require 'hs.drawing'
 local geometry = require 'hs.geometry'
 local screen = require 'hs.screen'
