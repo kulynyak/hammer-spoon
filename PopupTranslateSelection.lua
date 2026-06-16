@@ -7,6 +7,7 @@
 --- Download: [https://github.com/Hammerspoon/Spoons/raw/master/Spoons/PopupTranslateSelection.spoon.zip](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/PopupTranslateSelection.spoon.zip)
 
 
+local withCopiedSelection = require('util').withCopiedSelection
 local obj = {}
 obj.__index = obj
 
@@ -80,21 +81,6 @@ function obj:translatePopup(text, to, from)
   return self
 end
 
-local function withCopiedSelection(callback)
-  local original = hs.pasteboard.getContents()
-  hs.eventtap.keyStroke({ 'cmd' }, 8)
-
-  local function poll(attempt)
-    local selected = hs.pasteboard.getContents()
-    if selected ~= original then
-      callback(selected, original)
-    elseif attempt < 10 then
-      hs.timer.doAfter(0.05, function() poll(attempt + 1) end)
-    end
-  end
-
-  hs.timer.doAfter(0.05, function() poll(1) end)
-end
 
 --- PopupTranslateSelection:translateSelectionPopup(to, from)
 --- Method

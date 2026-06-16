@@ -1,4 +1,5 @@
 local launch = require 'launch-apps'
+hs.application.enableSpotlightForNameSearches(true)
 
 local function hideIt(app, hide)
   local appObj = hs.application.get(app)
@@ -8,7 +9,6 @@ local function hideIt(app, hide)
 end
 
 local function launchApps()
-  hs.application.enableSpotlightForNameSearches(true)
   for _, mapping in ipairs(launch) do
     local app = mapping[1]
     local bundle = mapping[2]
@@ -37,12 +37,4 @@ end
 
 launchApps()
 
-local function hideOnWake(eventType)
-  if eventType == hs.caffeinate.watcher.systemDidWake then
-    launchApps()
-  end
-end
-
-local CaffeinateWatcher = hs.caffeinate.watcher.new(hideOnWake)
-
-CaffeinateWatcher:start()
+return launchApps

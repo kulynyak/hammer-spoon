@@ -9,7 +9,7 @@ local coc = { 'control', 'option', 'command' }
 -- require('delete-words') -- conflicts with Astronvim/NvChad
 -- require('windows')
 require('spoons')
-require('launch')
+local launchApps = require('launch')
 require('notify')
 
 -- require 'signal-watcher'
@@ -101,8 +101,14 @@ local function muteOnWake(eventType)
   end
 end
 
-local caffeinateWatcher = hs.caffeinate.watcher.new(muteOnWake)
-caffeinateWatcher:start()
+-- Wake handler: re-launch hidden apps + re-mute audio {{{
+local wakeHandler = hs.caffeinate.watcher.new(function(eventType)
+  muteOnWake(eventType)
+  if eventType == hs.caffeinate.watcher.systemDidWake then
+    launchApps()
+  end
+end)
+wakeHandler:start()
 -- }}}
 
 -- force to switch desktop keyboard layout after start {{{

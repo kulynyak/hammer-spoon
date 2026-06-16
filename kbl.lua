@@ -1,5 +1,6 @@
 
 local utf8 = require('hs.utf8')
+local withCopiedSelection = require('util').withCopiedSelection
 
 function utf8.sub(s, i, j)
   i = utf8.offset(s, i)
@@ -30,49 +31,32 @@ local uken = makeTab(uk, en)
 
 local function transform(text)
   -- TODO: try to recognize direction for more precise transformation
-  local res1 = ''
-  local res2 = ''
-  local r1 = 0
-  local r2 = 0
+  local t1, t2 = {}, {}
+  local n1, n2 = 0, 0
   for i = 1, utf8.len(text), 1 do
     local char = utf8.sub(text, i, i)
     local fix1 = enuk[char]
     local fix2 = uken[char]
     if fix1 then
-      res1 = res1 .. fix1
-      r1 = r1 + 1
+      t1[i] = fix1
+      n1 = n1 + 1
     else
-      res1 = res1 .. char
+      t1[i] = char
     end
     if fix2 then
-      res2 = res2 .. fix2
-      r2 = r2 + 1
+      t2[i] = fix2
+      n2 = n2 + 1
     else
-      res2 = res2 .. char
+      t2[i] = char
     end
   end
-  if r1 > r2 then
-    return res1, 'Ukrainian - Typography'
+  if n1 > n2 then
+    return table.concat(t1), 'Ukrainian - Typography'
   else
-    return res2, 'ABC'
+    return table.concat(t2), 'ABC'
   end
 end
 
-local function withCopiedSelection(callback)
-  local original = hs.pasteboard.getContents()
-  hs.eventtap.keyStroke({ 'cmd' }, 8)
-
-  local function poll(attempt)
-    local selected = hs.pasteboard.getContents()
-    if selected ~= original then
-      callback(selected, original)
-    elseif attempt < 10 then
-      hs.timer.doAfter(0.05, function() poll(attempt + 1) end)
-    end
-  end
-
-  hs.timer.doAfter(0.05, function() poll(1) end)
-end
 
 local function fix()
   withCopiedSelection(function(selectedText, originalClipboardContents)
