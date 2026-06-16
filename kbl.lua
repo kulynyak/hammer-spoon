@@ -18,30 +18,18 @@ local function makeTab(from, to)
   return map
 end
 
--- local en_en = "`qwertyuiop[]\\asdfghjkl;'zxcvbnm,./~@#$^&QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?"
--- local uk_pc = "'йцукенгшщзхїґфивапролджєячсмітьбю.ʼ\"№;:?ЙЦУКЕНГШЩЗХЇҐФИВАПРОЛДЖЄЯЧСМІТЬБЮ,"
+local en = "qwertyuiop[]\\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?"
+local uk = 'йцукенгшщзхї/фівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇ|ФІВАПРОЛДЖЄЯЧСМИТЬБЮ,'
 
-local en_eu =
-  'qwertyuiop[]asdfghjkl;\'\\`zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:"|~ZXCVBNM<>?&'
-local uk =
-  'йцукенгшщзхїфівапролджєʼґячсмитьбю.ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄ₴ҐЯЧСМИТЬБЮ,?'
--- local uk = "йцукенгшщзхїфівапролджєґ'ячсмитьбю/ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄҐ~ЯЧСМИТЬБЮ?"
-
-local enuk = makeTab(en_eu, uk)
-local uken = makeTab(uk, en_eu)
+local enuk = makeTab(en, uk)
+local uken = makeTab(uk, en)
 
 local layouts = {
   -- ['U.S.'] = 'Ukrainian',
   -- ['Ukrainian'] = 'U.S.'
-  ['ABC'] = 'Ukrainian',
-  ['Ukrainian'] = 'ABC',
+  ['ABC'] = 'Ukrainian - Typography',
+  ['Ukrainian - Typography'] = 'ABC',
 }
-
--- local function printTable(t)
---   for key, value in pairs(t) do
---     print(key, value)
---   end
--- end
 
 local function transform(text)
   -- TODO: try to recognize direction for more precize transformation

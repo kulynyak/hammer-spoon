@@ -48,10 +48,10 @@ local wm = hs.webview.windowMasks
 local translator = require('PopupTranslateSelection')
 
 translator.popup_style = wm.utility
-  | wm.HUD
-  | wm.titled
-  | wm.closable
-  | wm.resizable
+    | wm.HUD
+    | wm.titled
+    | wm.closable
+    | wm.resizable
 translator:bindHotkeys({
   translate_uk_en = { hyper, '8' },
   translate_en_uk = { hyper, '9' },
@@ -107,7 +107,7 @@ caffeinateWatcher:start()
 
 -- force to switch desktop keyboard layout after start {{{
 hs.keycodes.setLayout('ABC')
-kbdTable = { en = 'ABC', uk = 'Ukrainian' }
+kbdTable = { en = 'ABC', uk = 'Ukrainian Slashes' }
 function setKbd(src)
   keyL = kbdTable[src]
   hs.keycodes.setLayout(keyL)
@@ -161,8 +161,8 @@ hs.hotkey.bind(
 -- Use coc + ` to reload Hammerspoon config {{{
 hs.hotkey.bind(coc, '`', nil, hs.reload)
 hs.notify
-  .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
-  :send()
+    .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
+    :send()
 -- }}}
 
 -- Use coc + ` to reload Hammerspoon config {{{
