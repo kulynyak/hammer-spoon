@@ -1,11 +1,15 @@
-local util = require('util')
-local keyUpDown = util.keyUpDown
 
 local utf8 = require('hs.utf8')
 
 function utf8.sub(s, i, j)
   i = utf8.offset(s, i)
-  j = utf8.offset(s, j + 1) - 1
+  if not i then return nil end
+  local j_off = j and utf8.offset(s, j + 1)
+  if j_off then
+    j = j_off - 1
+  else
+    j = #s
+  end
   return string.sub(s, i, j)
 end
 
@@ -24,15 +28,8 @@ local uk = 'йцукенгшщзхї/фівапролджєячсмитьбю.Й
 local enuk = makeTab(en, uk)
 local uken = makeTab(uk, en)
 
-local layouts = {
-  -- ['U.S.'] = 'Ukrainian',
-  -- ['Ukrainian'] = 'U.S.'
-  ['ABC'] = 'Ukrainian - Typography',
-  ['Ukrainian - Typography'] = 'ABC',
-}
-
 local function transform(text)
-  -- TODO: try to recognize direction for more precize transformation
+  -- TODO: try to recognize direction for more precise transformation
   local res1 = ''
   local res2 = ''
   local r1 = 0
@@ -55,38 +52,41 @@ local function transform(text)
     end
   end
   if r1 > r2 then
-    return res1
+    return res1, 'Ukrainian - Typography'
   else
-    return res2
+    return res2, 'ABC'
   end
 end
 
-local function fix()
-  -- Preserve the current contents of the system clipboard
-  local originalClipboardContents = hs.pasteboard.getContents()
-  -- Copy the currently-selected text to the system clipboard
-  keyUpDown('cmd', 'c')
-  -- Allow some time for the command+c keystroke to fire asynchronously before
-  -- we try to read from the clipboard
-  hs.timer.doAfter(0.2, function()
-    -- Construct the transformed output and paste it over top of the
-    -- currently-selected text
-    local selectedText = hs.pasteboard.getContents()
-    local transformedText = transform(selectedText)
-    hs.pasteboard.setContents(transformedText)
-    keyUpDown('cmd', 'v')
+local function withCopiedSelection(callback)
+  local original = hs.pasteboard.getContents()
+  hs.eventtap.keyStroke({ 'cmd' }, 8)
 
-    -- Allow some time for the command+v keystroke to fire asynchronously before
-    -- we restore the original clipboard
+  local function poll(attempt)
+    local selected = hs.pasteboard.getContents()
+    if selected ~= original then
+      callback(selected, original)
+    elseif attempt < 10 then
+      hs.timer.doAfter(0.05, function() poll(attempt + 1) end)
+    end
+  end
+
+  hs.timer.doAfter(0.05, function() poll(1) end)
+end
+
+local function fix()
+  withCopiedSelection(function(selectedText, originalClipboardContents)
+    local transformedText, targetLayout = transform(selectedText)
+    hs.pasteboard.setContents(transformedText)
+    hs.eventtap.keyStroke({ 'cmd' }, 9)
+
     hs.timer.doAfter(0.2, function()
       hs.pasteboard.setContents(originalClipboardContents)
-      local curLayout = hs.keycodes.currentLayout()
-      hs.keycodes.setLayout(layouts[curLayout])
+      hs.keycodes.setLayout(targetLayout)
     end)
   end)
 end
 
--- Use the utf8 library you already required at the top: local utf8 = require('hs.utf8')
 
 local function transformCase(text, mode)
   if not text or text == '' then
@@ -102,14 +102,21 @@ local function transformCase(text, mode)
   elseif mode == 'lower' then
     transformed = st:lower()
   else
-    -- Toggle logic: Check the first character using your existing utf8.sub
-    local first = utf8.sub(text, 1, 1)
-    local upperFirst = hs.styledtext.new(first):upper():getString()
-
-    if first == upperFirst then
-      transformed = st:lower()
-    else
-      transformed = st:upper()
+    -- Toggle logic: find first cased character, flip its case
+    for i = 1, utf8.len(text) do
+      local c = utf8.sub(text, i, i)
+      local sc = hs.styledtext.new(c)
+      if sc:upper():getString() ~= sc:lower():getString() then
+        if c == sc:upper():getString() then
+          transformed = st:lower()
+        else
+          transformed = st:upper()
+        end
+        break
+      end
+    end
+    if not transformed then
+      transformed = text
     end
   end
 
@@ -117,24 +124,13 @@ local function transformCase(text, mode)
 end
 
 local function runCaseFix(mode)
-  local original = hs.pasteboard.getContents()
-
-  -- Use keycodes 8 (C) and 9 (V) to avoid the "key not found" warning
-  hs.eventtap.keyStroke({ 'cmd' }, 8)
-
-  hs.timer.doAfter(0.2, function()
-    local selected = hs.pasteboard.getContents()
-    if not selected or selected == original then
-      return
-    end
-
+  withCopiedSelection(function(selected, originalClipboard)
     local newText = transformCase(selected, mode)
     hs.pasteboard.setContents(newText)
-
     hs.eventtap.keyStroke({ 'cmd' }, 9)
 
     hs.timer.doAfter(0.2, function()
-      hs.pasteboard.setContents(original)
+      hs.pasteboard.setContents(originalClipboard)
     end)
   end)
 end
