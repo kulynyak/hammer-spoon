@@ -6,8 +6,6 @@
 ---
 --- Download: [https://github.com/Hammerspoon/Spoons/raw/master/Spoons/PopupTranslateSelection.spoon.zip](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/PopupTranslateSelection.spoon.zip)
 
-local util = require('util')
-local keyUpDown = util.keyUpDown
 
 local obj = {}
 obj.__index = obj
@@ -82,6 +80,22 @@ function obj:translatePopup(text, to, from)
   return self
 end
 
+local function withCopiedSelection(callback)
+  local original = hs.pasteboard.getContents()
+  hs.eventtap.keyStroke({ 'cmd' }, 8)
+
+  local function poll(attempt)
+    local selected = hs.pasteboard.getContents()
+    if selected ~= original then
+      callback(selected, original)
+    elseif attempt < 10 then
+      hs.timer.doAfter(0.05, function() poll(attempt + 1) end)
+    end
+  end
+
+  hs.timer.doAfter(0.05, function() poll(1) end)
+end
+
 --- PopupTranslateSelection:translateSelectionPopup(to, from)
 --- Method
 --- Get the current selected text in the frontmost window and display a translation popup with the translation between the specified languages
@@ -93,20 +107,8 @@ end
 --- Returns:
 ---  * The PopupTranslateSelection object
 function obj:translateSelectionPopup(to, from)
-  -- Preserve the current contents of the system clipboard
-  local originalClipboardContents = hs.pasteboard.getContents()
-
-  -- Copy the currently-selected text to the system clipboard
-  keyUpDown('cmd', 'c')
-  -- Allow some time for the command+c keystroke to fire asynchronously before
-  -- we try to read from the clipboard
-  hs.timer.doAfter(0.1, function()
-    -- Construct the transformed output and paste it over top of the
-    -- currently-selected text
-    local text = hs.pasteboard.getContents()
-    hs.timer.doAfter(0.1, function()
-      hs.pasteboard.setContents(originalClipboardContents)
-    end)
+  withCopiedSelection(function(text, originalClipboardContents)
+    hs.pasteboard.setContents(originalClipboardContents)
     self:translatePopup(text, to, from)
   end)
 end

@@ -77,7 +77,7 @@ end
 function window.upLeft(win)
   local f = win:frame()
   local screen = win:screen()
-  local max = screen:fullFrame()
+  local max = screen:frame()
 
   f.x = max.x
   f.y = max.y
@@ -94,7 +94,7 @@ end
 function window.downLeft(win)
   local f = win:frame()
   local screen = win:screen()
-  local max = screen:fullFrame()
+  local max = screen:frame()
 
   f.x = max.x
   f.y = max.y + (max.h / 2)
@@ -111,7 +111,7 @@ end
 function window.downRight(win)
   local f = win:frame()
   local screen = win:screen()
-  local max = screen:fullFrame()
+  local max = screen:frame()
 
   f.x = max.x + (max.w / 2)
   f.y = max.y + (max.h / 2)
@@ -129,7 +129,7 @@ end
 function window.upRight(win)
   local f = win:frame()
   local screen = win:screen()
-  local max = screen:fullFrame()
+  local max = screen:frame()
 
   f.x = max.x + (max.w / 2)
   f.y = max.y
@@ -209,8 +209,8 @@ end
 function window.nextScreen(win)
   local currentScreen = win:screen()
   local allScreens = hs.screen.allScreens()
-  currentScreenIndex = hs.fnutils.indexOf(allScreens, currentScreen)
-  nextScreenIndex = currentScreenIndex + 1
+  local currentScreenIndex = hs.fnutils.indexOf(allScreens, currentScreen)
+  local nextScreenIndex = currentScreenIndex + 1
 
   if allScreens[nextScreenIndex] then
     win:moveToScreen(allScreens[nextScreenIndex])
@@ -219,7 +219,7 @@ function window.nextScreen(win)
   end
 end
 
-windowLayoutMode = hs.hotkey.modal.new({}, 'F16')
+local windowLayoutMode = hs.hotkey.modal.new({}, 'F16')
 
 windowLayoutMode.entered = function()
   windowLayoutMode.statusMessage:show()

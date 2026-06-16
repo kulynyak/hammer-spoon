@@ -11,20 +11,23 @@ local function launchApps()
   hs.application.enableSpotlightForNameSearches(true)
   for _, mapping in ipairs(launch) do
     local app = mapping[1]
-    local bandle = mapping[2]
+    local bundle = mapping[2]
     local hide = mapping[3]
 
     if type(app) == 'string' then
       local appObj = hs.application.get(app)
       if appObj == nil then
-        appObj = hs.application.open(bandle, 5, true)
+        appObj = hs.application.open(bundle, 5, true)
         if appObj ~= nil then
-          hideIt(bandle, hide)
-          for i = 1, 15 do
-            hs.timer.doAfter(i, function()
-              hideIt(bandle, hide)
-            end)
+          local function hideWithRetry(app, hide, remaining)
+            hideIt(app, hide)
+            if remaining > 0 then
+              hs.timer.doAfter(1, function()
+                hideWithRetry(app, hide, remaining - 1)
+              end)
+            end
           end
+          hideWithRetry(bundle, hide, 15)
         end
       end
       hideIt(app, hide)
@@ -40,6 +43,6 @@ local function hideOnWake(eventType)
   end
 end
 
-CaffeinateWatcher = hs.caffeinate.watcher.new(hideOnWake)
+local CaffeinateWatcher = hs.caffeinate.watcher.new(hideOnWake)
 
 CaffeinateWatcher:start()

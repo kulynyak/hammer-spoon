@@ -4,7 +4,6 @@
         "vim",
         "lvim",
         "hs",
-        "spoon",
-        "launch"
+        "spoon"
     ]
 }

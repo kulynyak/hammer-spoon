@@ -94,44 +94,43 @@ hs.window.setShadows(false)
 
 -- mute on wake {{{
 local muteSound = true
-function muteOnWake(eventType)
+local function muteOnWake(eventType)
   if eventType == hs.caffeinate.watcher.systemDidWake then
     local output = hs.audiodevice.defaultOutputDevice()
     output:setMuted(muteSound)
   end
 end
 
-caffeinateWatcher = hs.caffeinate.watcher.new(muteOnWake)
+local caffeinateWatcher = hs.caffeinate.watcher.new(muteOnWake)
 caffeinateWatcher:start()
 -- }}}
 
 -- force to switch desktop keyboard layout after start {{{
 hs.keycodes.setLayout('ABC')
-kbdTable = { en = 'ABC', uk = 'Ukrainian Slashes' }
-function setKbd(src)
-  keyL = kbdTable[src]
+local kbdTable = { en = 'ABC', uk = 'Ukrainian Slashes' }
+local function setKbd(src)
+  local keyL = kbdTable[src]
   hs.keycodes.setLayout(keyL)
 end
 
 -- }}}
 
 -- force to set desired keyboard layout for apps on open/focus {{{
-local key2App = require('apps-def')
+local appLayout = {}
+for _, entry in ipairs(require('apps-def')) do
+  local path = entry[2]
+  if path then
+    appLayout[path] = entry[3]
+  end
+end
+
 hs.window.filter.default:subscribe(
   hs.window.filter.windowFocused,
   function(window, appName)
-    for key, app in pairs(key2App) do
-      local path = app[2]
-      local im = app[3]
-      log.d('current: ' .. path .. ',path: ' .. window:application():path())
-      if window:application():path() == path then
-        if im then
-          log.d('found: ' .. path .. ', im: ' .. im)
-          -- hs.timer.doAfter(0.1, function() setKbd(im) end)
-          setKbd(im)
-        end
-        break
-      end
+    local path = window:application():path()
+    local im = appLayout[path]
+    if im then
+      setKbd(im)
     end
   end
 )

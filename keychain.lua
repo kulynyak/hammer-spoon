@@ -1,5 +1,3 @@
-local util = require('util')
-local keyUpDown = util.keyUpDown
 
 local obj = {}
 obj.__index = obj
@@ -65,9 +63,8 @@ function obj:pasteValue(label, jsonKey)
   end
   -- Preserve the current contents of the system clipboard
   local originalClipboardContents = hs.pasteboard.getContents()
-  -- Paste value into the input
   hs.pasteboard.setContents(kcValue)
-  keyUpDown('cmd', 'v')
+  hs.eventtap.keyStroke({ 'cmd' }, 9)
   -- Allow some time for the command+v keystroke to fire asynchronously before
   -- we restore the original clipboard
   hs.timer.doAfter(0.1, function()
