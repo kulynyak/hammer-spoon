@@ -9,7 +9,7 @@ clipboard utilities, and VPN credential pasting.
 - [Karabiner-Elements](https://karabiner-elements.pqrs.org/) — kernel-level key
   remapping required by the hyper key and coc chord
 
-See [`install.sh`](install.sh) for a one-shot setup script.
+See [`setup.sh`](setup.sh) for a one-shot setup script.
 
 Also requires the Karabiner config from [`assets/karabiner/`](assets/karabiner/):
 
