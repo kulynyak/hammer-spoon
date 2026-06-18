@@ -33,7 +33,7 @@ CHyper = {
   end,
 }
 
--- 比較の手間を省くためにあらかじめ数値にしておく
+-- Precompute keycode to avoid repeated lookup in comparisons
 local function realKeyCode(v)
   if type(v) == 'string' then
     v = hs.keycodes.map[v]
@@ -44,10 +44,10 @@ local function realKeyCode(v)
   return nil
 end
 
--- 2つの引数から modifiers と key を取得する。返り値は modifiers, key
--- ({'mod','mod'}, key) (key, {'mod','mod'}) -> 順不同で OK
--- ('key', nil)  -> modifiers は {}
--- ('mod+mod+key') -> オリジナル
+-- Parse modifiers and key from two arguments. Returns modifiers, key.
+-- ({'mod','mod'}, key) (key, {'mod','mod'}) -> order-independent
+-- ('key', nil)  -> modifiers is {}
+-- ('mod+mod+key') -> original shorthand
 local function parseKey(a1, a2)
   local parseSingle = function(a)
     if type(a) == 'number' then
@@ -242,8 +242,8 @@ local CModifierImpl = {
         end
       end
       if specials ~= nil then
-        for i, v in pairs(specials) do
-          table.insert(keyNumbers, realKeyCode(v))
+        for _, spec in pairs(specials) do
+          table.insert(keyNumbers, realKeyCode(spec))
         end
       end
     end
@@ -264,7 +264,7 @@ local CModifierImpl = {
   end,
 }
 
-CModifier.new = function(hyperInstance)
+CModifier.new = function(_)
   local _self = {
     _modFlags = {},
     _targetKeys = {},
@@ -314,7 +314,7 @@ local CBinderImpl = {
   end,
 }
 
-CBinder.new = function(hyperInstance)
+CBinder.new = function(_)
   local _self = {
     fromKey = nil,
     fromMod = {},
@@ -423,17 +423,17 @@ local CHyperImpl = {
       CHyper.showMessage(self.leaveMessage, self.alertDuration or 0)
     end
     self._tap:stop()
-    -- stop した後に呼ばないとキーイベントが発生しない
+    -- Must be called after :stop() or key events won't fire
     if not self._triggered and self._emptyHitFunc then
       self._emptyHitFunc()
     end
   end,
 
   handleTap = function(self, e, keyCode, type)
-    -- ややこしいことになるので triggerKey と同じものは無視
-    -- hotkey 最初の keyDown は来ないが、押下中の keyRepeat は来る
+    -- Ignore triggerKey repeats to avoid confusing state
+    -- First keyDown won't arrive via the tap, but held repeats will
     if keyCode == self._triggerKey then
-      -- triggerKey の keyUp は確実に逃がさないとモードを抜け出せない
+      -- Must release triggerKey's keyUp or the mode gets stuck
       if type == KEY_UP then
         return false
       else
@@ -531,7 +531,7 @@ CHyper.new = function(triggerKey)
   end
 
   local handleTap = function(e)
-    -- キーボードからの直接入力だけを扱う
+    -- Only handle direct keyboard input, not programmatic events
     local stateID =
       e:getProperty(hs.eventtap.event.properties['eventSourceStateID'])
     if stateID ~= 1 then
@@ -618,6 +618,7 @@ CHyperParasites.startTap = function()
       { hs.eventtap.event.types.flagsChanged },
       CHyperParasites._handleTap
     )
+    ---@diagnostic disable-next-line: undefined-field
     CHyperParasites._tap:start()
   end
 end
@@ -638,9 +639,9 @@ CHyperImpl.parasitize = function(self, modifier)
   CHyperParasites._parasites[keyCode] = self
 
   self._parasited = true
-  self.sticky = function(self)
+  self.sticky = function(s)
     log.d('parasite can not become sticky')
-    return self
+    return s
   end
   return self
 end
@@ -671,7 +672,7 @@ local CHyperStickyImpl = {
     self._stickyModal:exit()
   end,
 
-  exit = function(self)
+  exit = function(_)
     -- intercept
   end,
 

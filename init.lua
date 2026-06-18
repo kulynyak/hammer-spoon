@@ -4,7 +4,7 @@
 require('hs.ipc')
 -- hs.logger.defaultLogLevel = "debug"
 hs.logger.defaultLogLevel = 'nothing'
-local log = hs.logger.new('init')
+--
 
 -- Modifier chords used throughout the config
 -- hyper (4-finger) for app switching, window layout, keyboard fix
@@ -12,15 +12,13 @@ local log = hs.logger.new('init')
 local hyper = { 'command', 'option', 'shift', 'control' }
 local coc = { 'control', 'option', 'command' }
 
-
 -- require('delete-words') -- conflicts with Astronvim/NvChad
--- require('windows')
+require('windows')
 require('spoons')
 local launchApps = require('launch')
 require('notify')
 
 -- require 'signal-watcher'
-
 
 -- setup apps {{{
 require('apps')(hyper)
@@ -31,21 +29,6 @@ local kbl = require('kbl')
 hs.hotkey.bind(hyper, '0', nil, kbl.fix)
 hs.hotkey.bind(hyper, '6', nil, kbl.toUpper)
 hs.hotkey.bind(hyper, '7', nil, kbl.toLower)
--- }}}
-
--- setup translation {{{
-local wm = hs.webview.windowMasks
-local translator = require('PopupTranslateSelection')
-
-translator.popup_style = wm.utility
-    | wm.HUD
-    | wm.titled
-    | wm.closable
-    | wm.resizable
-translator:bindHotkeys({
-  translate_uk_en = { hyper, '8' },
-  translate_en_uk = { hyper, '9' },
-})
 -- }}}
 
 -- Lock Screen - Ctrl+Opt+Cmd+\ {{{
@@ -122,7 +105,7 @@ end
 
 hs.window.filter.default:subscribe(
   hs.window.filter.windowFocused,
-  function(window, appName)
+  function(window, _)
     local path = window:application():path()
     local im = appLayout[path]
     if im then
@@ -148,12 +131,11 @@ hs.hotkey.bind(
 )
 --- }}}
 
-
 -- Reload config {{{
 hs.hotkey.bind(coc, '`', nil, hs.reload)
 hs.notify
-    .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
-    :send()
+  .new({ title = 'Hammerspoon', informativeText = 'Ready to rock' })
+  :send()
 -- }}}
 
 -- Toggle console {{{

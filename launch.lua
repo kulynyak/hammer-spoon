@@ -3,7 +3,7 @@
 --  Hides app windows after launch, retrying up to 15 times because some
 --  apps (Mail, Calendar) re-show their window after initial hide.
 
-local launch = require 'launch-apps'
+local launch = require('launch-apps')
 hs.application.enableSpotlightForNameSearches(true)
 
 local function hideIt(app, hide)
@@ -24,11 +24,11 @@ local function launchApps()
       if appObj == nil then
         appObj = hs.application.open(bundle, 5, true)
         if appObj ~= nil then
-          local function hideWithRetry(app, hide, remaining)
-            hideIt(app, hide)
+          local function hideWithRetry(appName, shouldHide, remaining)
+            hideIt(appName, shouldHide)
             if remaining > 0 then
               hs.timer.doAfter(1, function()
-                hideWithRetry(app, hide, remaining - 1)
+                hideWithRetry(appName, shouldHide, remaining - 1)
               end)
             end
           end

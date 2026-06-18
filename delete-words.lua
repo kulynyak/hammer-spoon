@@ -3,7 +3,7 @@
 -- <c-k> delete to line start
 -- <c-;> delete to line end
 
-local util = require 'util'
+local util = require('util')
 local keyUpDown = util.keyUpDown
 
 -- Subscribe to the necessary events on the given window filter such that the
@@ -60,7 +60,7 @@ end)
 -- we don't need (or want) this hotkey in the terminal. If this hotkey was
 -- enabled in the terminal, it would break the standard control + u behavior.
 -- Therefore, we only enable this hotkey for non-terminal apps.
-local wf = hs.window.filter.new():setFilters {
+local wf = hs.window.filter.new():setFilters({
   iTerm2 = false,
   Terminal = false,
   Alacritty = false,
@@ -68,7 +68,7 @@ local wf = hs.window.filter.new():setFilters {
   Code = false,
   WezTerm = false,
   Ghostty = false,
-}
+})
 
 enableHotkeyForWindowsMatchingFilter(
   wf,

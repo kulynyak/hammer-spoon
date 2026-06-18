@@ -3,7 +3,9 @@
 -- Work
 -- Home
 -- osascript -e 'id of app "Outlook"'
--- defaults write com.apple.LaunchServices LSHandlers -array-add '{LSHandlerContentType=public.plain-text;LSHandlerRoleAll=com.microsoft.VSCode;}'
+-- defaults write com.apple.LaunchServices LSHandlers -array-add \
+--  '{LSHandlerContentType=public.plain-text;\
+--  LSHandlerRoleAll=com.microsoft.VSCode;}'
 return {
   -- { app-path, bundleID, hide, mode},
   -- comment
@@ -35,7 +37,7 @@ return {
     'Signal',
     'org.whispersystems.signal-desktop',
     true,
-    'Work',
+    'All',
   },
   {
     'WhatsApp',

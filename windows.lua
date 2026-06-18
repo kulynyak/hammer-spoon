@@ -5,7 +5,7 @@
 
 -- Disable animations globally for instant window moves
 hs.window.animationDuration = 0
-window = hs.getObjectMetatable 'hs.window'
+local window = hs.getObjectMetatable('hs.window')
 
 -- +-----------------+
 -- |        |        |
@@ -245,20 +245,28 @@ end
 local status, windowMappings = pcall(require, 'keyboard.windows-bindings')
 
 if not status then
-  windowMappings = require 'windows-bindings-defaults'
+  windowMappings = require('windows-bindings-defaults')
 end
 
--- Convert modifier array to human-readable symbol string (e.g. {"ctrl","alt"} → "⌃⌥")
+-- Convert modifier array to human-readable symbol string
+-- (e.g. {"ctrl","alt"} → "⌃⌥")
 local modifiers = windowMappings.modifiers
 local showHelp = windowMappings.showHelp
 local trigger = windowMappings.trigger
 local mappings = windowMappings.mappings
 
-function getModifiersStr(modifiers)
-  local modMap = { shift = '⇧', ctrl = '⌃', alt = '⌥', cmd = '⌘' }
+local function getModifiersStr(mods)
+  local modMap = {
+    shift = '⇧',
+    ctrl = '⌃',
+    alt = '⌥',
+    cmd = '⌘',
+    control = '⌃',
+    option = '⌥',
+    command = '⌘',
+  }
   local retVal = ''
-
-  for i, v in ipairs(modifiers) do
+  for _, v in ipairs(mods) do
     retVal = retVal .. modMap[v]
   end
 
@@ -272,27 +280,27 @@ msgStr = 'Window Layout Mode ('
   .. trigger
   .. ')'
 
-for i, mapping in ipairs(mappings) do
-  local modifiers, trigger, winFunction = table.unpack(mapping)
-  local hotKeyStr = getModifiersStr(modifiers)
+for _, mapping in ipairs(mappings) do
+  local mods, trig, winFunction = table.unpack(mapping)
+  local hotKeyStr = getModifiersStr(mods)
 
   if showHelp == true then
     if string.len(hotKeyStr) > 0 then
       msgStr = msgStr
-        .. (string.format('\n%10s+%s => %s', hotKeyStr, trigger, winFunction))
+        .. (string.format('\n%10s+%s => %s', hotKeyStr, trig, winFunction))
     else
-      msgStr = msgStr .. (string.format('\n%11s => %s', trigger, winFunction))
+      msgStr = msgStr .. (string.format('\n%11s => %s', trig, winFunction))
     end
   end
 
-  windowLayoutMode:bindWithAutomaticExit(modifiers, trigger, function()
+  windowLayoutMode:bindWithAutomaticExit(mods, trig, function()
     --example: hs.window.focusedWindow():upRight()
     local fw = hs.window.focusedWindow()
     fw[winFunction](fw)
   end)
 end
 
-local message = require 'status-message'
+local message = require('status-message')
 windowLayoutMode.statusMessage = message.new(msgStr)
 
 -- Use modifiers+trigger to toggle WindowLayout Mode

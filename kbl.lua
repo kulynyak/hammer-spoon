@@ -11,7 +11,9 @@ local withCopiedSelection = require('util').withCopiedSelection
 -- Only used internally; overrides hs.utf8.sub for convenience.
 function utf8.sub(s, i, j)
   i = utf8.offset(s, i)
-  if not i then return nil end
+  if not i then
+    return nil
+  end
   local j_off = j and utf8.offset(s, j + 1)
   if j_off then
     j = j_off - 1
@@ -26,16 +28,21 @@ end
 local function makeTab(from, to)
   local map = {}
   for i = 1, utf8.len(from), 1 do
-    local f, t = utf8.sub(from, i, i), utf8.sub(to, i, i)
-    map[f] = t
+    local f = utf8.sub(from, i, i)
+    local t = utf8.sub(to, i, i)
+    if f and t then
+      map[f] = t
+    end
   end
   return map
 end
 
 -- Keyboard layouts as linear strings, positions correspond 1:1.
 -- en = US/ABC physical key sequence, uk = Ukrainian-Typography equivalent.
-local en = "qwertyuiop[]\\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?"
-local uk = 'йцукенгшщзхї/фівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇ|ФІВАПРОЛДЖЄЯЧСМИТЬБЮ,'
+local en =
+  'qwertyuiop[]\\asdfghjkl;\'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?'
+local uk =
+  'йцукенгшщзхї/фівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇ|ФІВАПРОЛДЖЄЯЧСМИТЬБЮ,'
 
 local enuk = makeTab(en, uk)
 local uken = makeTab(uk, en)

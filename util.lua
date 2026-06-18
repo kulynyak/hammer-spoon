@@ -17,11 +17,15 @@ local function withCopiedSelection(callback)
     if selected ~= original then
       callback(selected, original)
     elseif attempt < 10 then
-      hs.timer.doAfter(0.05, function() poll(attempt + 1) end)
+      hs.timer.doAfter(0.05, function()
+        poll(attempt + 1)
+      end)
     end
   end
 
-  hs.timer.doAfter(0.05, function() poll(1) end)
+  hs.timer.doAfter(0.05, function()
+    poll(1)
+  end)
 end
 
 return {

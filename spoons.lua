@@ -29,4 +29,18 @@ Install:andUse('TextClipboardHistory', {
   },
 })
 
+Install:andUse('PopupTranslateSelection', {
+  config = {
+    popup_style = hs.webview.windowMasks.utility
+      | hs.webview.windowMasks.HUD
+      | hs.webview.windowMasks.titled
+      | hs.webview.windowMasks.closable
+      | hs.webview.windowMasks.resizable,
+  },
+  hotkeys = {
+    translate_uk_en = { hyper, '8' },
+    translate_en_uk = { hyper, '9' },
+  },
+})
+
 spoon.SpoonInstall:asyncUpdateAllRepos()
